@@ -1,5 +1,5 @@
 # craete truth table class
-import re
+
 from propositionalSymbol import PropositionalSymbol
 from clause import Clause
 
@@ -16,13 +16,8 @@ class TruthTable:
     def getClauses(self, i):
         return self.clauses[i]
 
-    def query(self):
-        pass
-
     def readFile(self, filename):
         with open(filename, 'r') as file:
-            # symbols = []
-            # operators = ["=>", "&", "~", "||", "<=>"]
             line = file.readline().strip()
             if line != "TELL":
                 raise Exception("No TELL")
@@ -62,10 +57,9 @@ class TruthTable:
 
 
 
-
 if __name__ == "__main__":
     truthtable = TruthTable()
     truthtable.readFile("file.txt")
 
-    for symbol in truthtable.symbols:
-        print(symbol)
+    for clause in truthtable.clauses:
+        print(clause)
