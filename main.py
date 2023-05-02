@@ -1,23 +1,14 @@
 from propositionalSymbol import PropositionalSymbol
-
+from clause import Clause
 instanceA = PropositionalSymbol("A")
 instanceB = PropositionalSymbol("B")
 instanceC = PropositionalSymbol("C")
 instanceD = PropositionalSymbol("D")
 
-
-listOfSymbols = [instanceA, instanceB, instanceC, instanceD]
-for i in listOfSymbols:
-    print(i.getValue())
-
-
-instanceA.setValue(True)
-instanceB.setValue(False)
-instanceC.setValue(True)
-instanceD.setValue(False)
-
-
-for i in listOfSymbols:
-    print(i.getValue())
-
+clauseAandB = Clause(instanceA, "&", instanceB)
+clauseAandBandC = Clause(clauseAandB, "&", instanceC)
+clauseAandBandCimplyD = Clause(clauseAandBandC, "=>", instanceD)
+# print(clauseAandBandCimplyD.getValue())
+clauseAandBandCimplyD.setPropositionalSymbol({"A":True, "B":True, "C":True, 'D':False})
+print(clauseAandBandCimplyD.getValue())
 

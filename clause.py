@@ -7,9 +7,12 @@ class Clause:
         self.right = right
         self.value = None
     
-    def setValue(self, value):
-        self.value = value
-
+    # def setValue(self, value):
+    #     self.value = value
+    def setPropositionalSymbol(self, propositionalSymbolList):
+        self.left.setPropositionalSymbol(propositionalSymbolList)
+        self.right.setPropositionalSymbol(propositionalSymbolList)
+        
 
 
     def getValue(self):

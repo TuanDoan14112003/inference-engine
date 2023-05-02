@@ -7,10 +7,15 @@ class TTAlgorithm:
     def validate(self, queryList, model):
         #query ist is a list of clauses [a&b&c => b]
         #model is a list of Propositional Symbol [a: True, b: False, c:True]
+        for clause in queryList:
+            clause.setPropositionalSymbol(model)
+            
+        
+        
 
     def checkAll(self,knowledgeBase, query, symbols, model):
         if not symbols:
-
+            if 
         else:
             symbol = symbols.pop()
             oldSymbols = symbols.deepcopy()
@@ -19,7 +24,7 @@ class TTAlgorithm:
     def extend(self,symbol,value,model):
         newModel = model.deepcopy()
         newPropositionalSymbol = PropositionalSymbol(symbol)
-        newPropositionalSymbol.setValue(value)
+        newPropositionalSymbol.value = value
         newModel.append(newPropositionalSymbol)
         return newModel
 

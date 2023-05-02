@@ -3,8 +3,8 @@ class PropositionalSymbol:
         self.symbol = symbol.strip()
         self.value = None
 
-    def setValue(self, value):
-        self.value = value
+    # def setValue(self, value):
+    #     self.value = value
 
     def getValue(self):
         return self.value
@@ -14,3 +14,10 @@ class PropositionalSymbol:
 
     def __eq__(self, other):
         return self.symbol == other.symbol
+    
+    def setPropositionalSymbol(self,propositionalSymbolList): 
+        for symbol in propositionalSymbolList:
+            if self == symbol:
+                self.value = propositionalSymbolList[symbol].getValue()
+
+            
