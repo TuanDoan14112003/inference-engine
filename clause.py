@@ -3,7 +3,7 @@ class Clause:
     def __init__ (self, left, operator = None, right = None):
         self.satisfied = False
         self.left = left
-        self.operator = operator
+        self.operator = operator.strip()
         self.right = right
         self.value = None
     
@@ -26,6 +26,9 @@ class Clause:
                 return self.left.getValue() == self.right.getValue()
             elif self.operator == "~":
                 return not self.left.getValue()
+
+    def __str__(self):
+        return str(self.left) + self.operator + str(self.right)
             
 if __name__ == "__main__":
     from propositionalSymbol import PropositionalSymbol
