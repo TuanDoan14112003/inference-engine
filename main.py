@@ -1,16 +1,35 @@
-# This is a sample Python script.
+import re
+def readFile(filename):
+    with open(filename,'r') as file:
+        symbols = []
+        operators = ["=>","&","~","||","<=>"]
+        line = file.readline().strip()
+        if line != "TELL":
+            raise Exception("No TELL")
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+        line = file.readline().strip()
+        knowledgeBase = ""
+        while line != "ASK":
+            knowledgeBase += line
+            line = file.readline().strip()
+        query = file.readline().strip()
+        clauses = knowledgeBase.split(";")
+        clauses = [clause.strip() for clause in clauses if clause != ""]
+        for clause in clauses:
+            if "=>" in clause:
+                symbolList = re.split("=>|&" , clause)
+                for symbol in symbolList:
+                    if symbol.strip() not in symbols:
+                        symbols.append(symbol.strip())
+            else:
+                if clause.strip() not in symbols:
+                    symbols.append(clause.strip())
+
+        print(symbols)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+readFile("file.txt")
