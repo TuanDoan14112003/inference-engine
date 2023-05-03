@@ -8,14 +8,14 @@ class Clause:
         else:
             self.operator = None
         self.right = right
-        self.value = None
+        # self.value = None
 
     # def setValue(self, value):
     #     self.value = value
-    def setPropositionalSymbol(self, propositionalSymbolList):
+    def setPropositionalSymbol(self, model):
         if self.left:
-            self.left.setPropositionalSymbol(propositionalSymbolList)
-        self.right.setPropositionalSymbol(propositionalSymbolList)
+            self.left.setPropositionalSymbol(model)
+        self.right.setPropositionalSymbol(model)
 
     def getValue(self):
         if self.left is None:
@@ -40,9 +40,10 @@ class Clause:
 if __name__ == "__main__":
     from propositionalSymbol import PropositionalSymbol
 
-    symbolA = PropositionalSymbol("A", False)
-    symbolB = PropositionalSymbol("B", True)
-    symbolC = PropositionalSymbol("C", False)
-    clauseAAndB = Clause(symbolA, "&", symbolB)
-    clauseTotal = Clause(clauseAAndB, "=>", symbolC)
+    symbolA = PropositionalSymbol("A")
+    symbolB = PropositionalSymbol("B")
+    symbolC = PropositionalSymbol("C")
+    clauseAAndB = Clause(left = symbolA, operator= "&", right = symbolB)
+    clauseTotal = Clause(left = clauseAAndB,operator = "<=>", right=symbolC)
+    clauseTotal.setPropositionalSymbol([PropositionalSymbol("A", True),PropositionalSymbol("B", True), PropositionalSymbol("C", True)])
     print(clauseTotal.getValue())

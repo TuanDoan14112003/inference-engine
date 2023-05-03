@@ -64,7 +64,7 @@ def parseClause(clauseString):
         return parseClause(clauseString.strip().strip("()"))
 
 if __name__ == "__main__":
-    clause = parseClause("~a")
+    clause = parseClause("a & c & d=> b")
     print(clause)
 
 

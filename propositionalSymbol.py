@@ -1,7 +1,7 @@
 class PropositionalSymbol:
-    def __init__(self, symbol):
+    def __init__(self, symbol, value = None):
         self.symbol = symbol.strip()
-        self.value = None
+        self.value = value
 
     # def setValue(self, value):
     #     self.value = value
@@ -15,9 +15,9 @@ class PropositionalSymbol:
     def __eq__(self, other):
         return self.symbol == other.symbol
     
-    def setPropositionalSymbol(self,propositionalSymbolList): 
-        for symbol in propositionalSymbolList:
+    def setPropositionalSymbol(self,model):
+        for symbol in model:
             if self == symbol:
-                self.value = propositionalSymbolList[symbol].getValue()
+                self.value = symbol.getValue()
 
             
