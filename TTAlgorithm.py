@@ -66,4 +66,4 @@ if __name__ == "__main__":
 
     tt = TTAlgorithm()
     print(tt.checkAll(env.knowledgeBase,env.query,env.symbols,[]))
-    print(tt.kbCount)
+    print(tt.kbCount) # rowCount and kbCount must be reset to 0 when checkALl is called the second time with the same instance

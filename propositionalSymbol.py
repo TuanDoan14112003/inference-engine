@@ -11,6 +11,9 @@ class PropositionalSymbol:
             raise Exception("Symbol has not been set a value")
         return self.value
 
+    def getNumberOfOperands(self):
+        return 1
+
     def __str__(self):
         return self.symbol
 

@@ -32,18 +32,27 @@ class Clause:
             elif self.operator == "~":
                 return not self.right.getValue()
 
+    def getNumberOfOperands(self):
+        return self.right.getNumberOfOperands() + (self.left.getNumberOfOperands() if self.left else 0)
+
     def __str__(self):
         return ("(" if self.operator else "") + (str(self.left) if self.left else "") + (
             self.operator if self.operator else "") + str(self.right) + (")" if self.operator else "")
 
+    def __eq__(self, other):
+        return self.left == other.left and self.right == other.right and self.operator == other.operator
+
+    def __hash__(self):
+        return hash(str(self))
+
 
 if __name__ == "__main__":
     from propositionalSymbol import PropositionalSymbol
-
+    from generalLogicParser import parseClause
     symbolA = PropositionalSymbol("A")
     symbolB = PropositionalSymbol("B")
     symbolC = PropositionalSymbol("C")
     clauseAAndB = Clause(left = symbolA, operator= "&", right = symbolB)
     clauseTotal = Clause(left = clauseAAndB,operator = "<=>", right=symbolC)
     clauseTotal.setPropositionalSymbol([PropositionalSymbol("A", True),PropositionalSymbol("B", True), PropositionalSymbol("C", True)])
-    print(clauseTotal.getValue())
+    print(parseClause("a&b&c&d&e&g&i => f").left.getNumberOfOperands())
