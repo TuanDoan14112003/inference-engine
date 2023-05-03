@@ -7,6 +7,8 @@ class PropositionalSymbol:
     #     self.value = value
 
     def getValue(self):
+        if self.value is None:
+            raise Exception("Symbol has not been set a value")
         return self.value
 
     def __str__(self):

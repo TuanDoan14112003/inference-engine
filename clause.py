@@ -18,7 +18,7 @@ class Clause:
         self.right.setPropositionalSymbol(model)
 
     def getValue(self):
-        if self.left is None:
+        if self.left is None and self.operator is None:
             return self.right.getValue()
         else:
             if self.operator == "&":
