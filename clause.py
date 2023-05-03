@@ -3,7 +3,10 @@ class Clause:
     def __init__ (self, left, operator = None, right = None):
         self.satisfied = False
         self.left = left
-        self.operator = operator.strip()
+        if operator:
+            self.operator = operator.strip()
+        else:
+            self.operator = None
         self.right = right
         self.value = None
     
@@ -11,7 +14,8 @@ class Clause:
     #     self.value = value
     def setPropositionalSymbol(self, propositionalSymbolList):
         self.left.setPropositionalSymbol(propositionalSymbolList)
-        self.right.setPropositionalSymbol(propositionalSymbolList)
+        if self.right:
+            self.right.setPropositionalSymbol(propositionalSymbolList)
         
 
 
@@ -31,7 +35,7 @@ class Clause:
                 return not self.left.getValue()
 
     def __str__(self):
-        return str(self.left) + self.operator + str(self.right)
+        return ("(" if self.right else "")  + str(self.left) + (self.operator if self.operator else "") + (str(self.right) if self.right else "") + (")" if self.right else "")
             
 if __name__ == "__main__":
     from propositionalSymbol import PropositionalSymbol
