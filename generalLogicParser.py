@@ -6,7 +6,7 @@ def parseClause(clauseString):
     operators = ["(", ")", "||", "&", "~", "=>", "<=>"]
     clauseString = clauseString.strip()
     if not [operator for operator in operators if operator in clauseString]:
-        return Clause(PropositionalSymbol(clauseString.strip()))
+        return Clause(right=PropositionalSymbol(clauseString.strip()))
     else:
         openParenthesis = 0
         closeParenthesis = 0
@@ -51,10 +51,20 @@ def parseClause(clauseString):
 
                 return Clause(left=leftClause,right=rightClause, operator="&")
 
+        for i in range(len(clauseString) - 1, -1, -1):
+            if clauseString[i] == "(":
+                openParenthesis += 1
+            elif clauseString[i] == ")":
+                closeParenthesis += 1
+            if openParenthesis == closeParenthesis and clauseString[i] == "~":
+                rightClause = parseClause(clauseString[i+1:])
+
+                return Clause(right=rightClause, operator="~")
+
         return parseClause(clauseString.strip().strip("()"))
 
 if __name__ == "__main__":
-    clause = parseClause("a & (b & c => e) & b")
+    clause = parseClause("~a")
     print(clause)
 
 
