@@ -49,8 +49,10 @@ def parseClause(clauseString):
                 leftClause = parseClause(clauseString[:i])
                 rightClause = parseClause(clauseString[i+1:])
 
-                return Clause(left=leftClause,right=rightClause, operator="&")
+                return Clause(left=leftClause, right=rightClause, operator="&")
 
+        openParenthesis = 0
+        closeParenthesis = 0
         for i in range(len(clauseString) - 1, -1, -1):
             if clauseString[i] == "(":
                 openParenthesis += 1
@@ -59,13 +61,14 @@ def parseClause(clauseString):
             if openParenthesis == closeParenthesis and clauseString[i] == "~":
                 rightClause = parseClause(clauseString[i+1:])
 
-                return Clause(right=rightClause, operator="~")
+                return Clause(right=rightClause, operator="~") # does not work with ~~a
 
         return parseClause(clauseString.strip().strip("()"))
 
 if __name__ == "__main__":
-    clause = parseClause("a & c & d=> b")
-    print(clause)
+    clause = parseClause("a || b")
+    clause.setPropositionalSymbol([PropositionalSymbol('a',True),PropositionalSymbol('b',True)])
+    print(clause.getValue())
 
 
 
