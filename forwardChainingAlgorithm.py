@@ -3,12 +3,15 @@ class ForwardChaining:
         self.foundSymbols = []
 
     def forwardChainingEntails(self, knowledgeBase, symbols, query):
+        self.foundSymbols = []
         count = {clause: clause.left.getNumberOfOperands() for clause in knowledgeBase if clause.operator == "=>"}
         inferred = {symbol: False for symbol in symbols}
         agenda = [clause.right.symbol for clause in knowledgeBase if
                   clause.operator is None and clause.left is None]  # sai neu co ~
         self.foundSymbols = agenda.copy()
         while agenda:
+            if query.right.symbol in self.foundSymbols: # !!!!!!!!!!!!!!!!!!!
+                return True
             symbol = agenda.pop()
             if not inferred[symbol]:
                 inferred[symbol] = True
