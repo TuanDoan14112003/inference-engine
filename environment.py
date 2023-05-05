@@ -1,4 +1,4 @@
-# craete truth table class
+# create truth table class
 import re
 
 from propositionalSymbol import PropositionalSymbol
