@@ -27,7 +27,7 @@ class testGenrator:
             file.write("\n")
             file.write("ASK\n")
             file.write(random.choice(string.ascii_lowercase))
-            file.close()
+            file.close() # khong can phai close trong with
 
     def generateGeneralCase(self):
         pass
