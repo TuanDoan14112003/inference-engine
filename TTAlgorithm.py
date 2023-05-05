@@ -2,7 +2,7 @@ from propositionalSymbol import PropositionalSymbol
 from copy import deepcopy
 
 
-class TTAlgorithm:
+class TruthTableAlgorithm:
     def __init__(self):
         self.rowCount = 0
         self.kbCount = 0
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     env = Environment()
     env.readFile("file.txt")
 
-    tt = TTAlgorithm()
+    tt = TruthTableAlgorithm()
     print(tt.checkAll(env.knowledgeBase,env.query,env.symbols,[]))
     print(tt.kbCount) # rowCount and kbCount must be reset to 0 when checkALl is called the second time with the same instance
     print(tt.rowCount)
