@@ -79,8 +79,16 @@ def isCNF(clause):
         if clause.operator == "~":
             return isinstance(clause.right.right,PropositionalSymbol)
         if clause.operator == "||":
+            if not isinstance(clause.left.right,PropositionalSymbol):
+                if clause.left.operator != "||":
+                    return False
+            if not isinstance(clause.right.right,PropositionalSymbol):
+                if clause.right.operator != "||":
+                    return False
+
             if not isinstance(clause.left.right,PropositionalSymbol) or not isinstance(clause.right.right,PropositionalSymbol):
                 return isCNF(clause.left) and isCNF(clause.right)
+
             if isinstance(clause.left.right,PropositionalSymbol) or (clause.left.operator == "~" and isinstance(clause.left.right.right,PropositionalSymbol)):
                 if isinstance(clause.right.right,PropositionalSymbol) or (clause.right.operator == "~" and isinstance(clause.right.right.right,PropositionalSymbol)):
                     return True
@@ -171,11 +179,12 @@ if __name__ == "__main__":
     # clause = parseClause("(a || b || c || d || ~e) & (c || ~d) & a & c")
     # print(isCNF(clause))
 
-    clause = parseClause("~(a=>  b & c)")
+    clause = parseClause("b || c || d || e")
     newClause = convertToCNF(clause)
     print(newClause)
+    print(isCNF(parseClause("b || c || d || e")))
     #
     import sympy
-    print(sympy.to_cnf("~(a >> (b & c))"))
+    print(sympy.to_cnf("b | c | d | e"))
     # clause2 = parseClause("~(a=>b)")
     # print(newClause == clause2)
