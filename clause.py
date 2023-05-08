@@ -40,6 +40,8 @@ class Clause:
             self.operator if self.operator else "") + str(self.right) + (")" if self.operator else "")
 
     def __eq__(self, other):
+        if not isinstance(other,Clause):
+            return False
         return self.left == other.left and self.right == other.right and self.operator == other.operator
 
     def __hash__(self):
