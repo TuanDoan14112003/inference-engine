@@ -20,12 +20,15 @@ class TruthTableAlgorithm:
 
     def checkAll(self, knowledgeBase, query, symbols, model):
         if not symbols:
-            for symbol in model:
-                print(symbol.symbol + " " + str(symbol.value), end= "  ")
-            print()
+            # for symbol in model:
+            #     print(symbol.symbol + " " + str(symbol.value), end= "  ")
+            # print()
             self.rowCount += 1
             if self.validate(knowledgeBase, model):
                 self.kbCount += 1
+                for symbol in model:
+                    print(str(symbol.symbol) + ": " + str(symbol.value), end ="  ")
+                print()
                 return self.validate([query], model)
             else:
                 return True

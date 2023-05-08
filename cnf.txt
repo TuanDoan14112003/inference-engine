@@ -1,0 +1,15 @@
+a & b => c & d
+~(a => b & c)
+~(a=>b)
+
+  A => B    --->    ~A | B
+    A <= B    --->    A | ~B
+    A <=> B   --->    (~A | B) & (A | ~B)
+Negations in:
+
+    ~~p         --->    p
+    ~(A & B)  --->    ~A | ~B
+    ~(A | B)  --->    ~A & ~B
+Disjunctions in:
+
+    A | (B & C)  --->  (A | B) & (A | C)
