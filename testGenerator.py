@@ -1,34 +1,42 @@
 import random
 import string
-class TestGenrator:
+
+
+class TestGenerator:
     def __init__(self):
         self.symbols = []
         self.clauses = []
 
-    def generateHornCase(self):
-        for i in range(1, 10):
-            clause = ""
-            if (random.randint(0, 1) == 0):
-                for j in range(1, 2):
-                    clause += random.choice(string.ascii_lowercase)
+    def generateHornCase(self, filename):
+
+        self.clauses = []
+        self.symbols = []
+        self.symbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
+        for i in range(0, 10):
+            for j in range(1, 10):
+                clause = ""
+                if (random.randint(0, 1) == 0):
+
+                    clause += random.choice(self.symbols)
                     clause += "&"
-                clause += random.choice(string.ascii_lowercase)
-                clause += " => "
-                clause += random.choice(string.ascii_lowercase)
-            else:
-                clause += random.choice(string.ascii_lowercase)
-            self.clauses.append(clause)
-        
-        with open("horn.txt", "w") as file:
-            file.write("TELL\n")
-            for clause in self.clauses:    
-                file.write(clause)
-                file.write("; ")
-            file.write("\n")
-            file.write("ASK\n")
-            file.write(random.choice(string.ascii_lowercase))
+                    clause += random.choice(self.symbols)
+                    clause += " => "
+                    clause += random.choice(self.symbols)
+                else:
+                    clause += random.choice(self.symbols)
+                self.clauses.append(clause)
+
+            with open(filename+str(i)+".txt", "w") as file:
+                file.write("TELL\n")
+                for clause in self.clauses:
+                    file.write(clause)
+                    file.write("; ")
+                file.write("\n")
+                file.write("ASK\n")
+                file.write(random.choice(self.symbols))
 
     def generateGeneralCase(self):
+
         for i in range(1, 10):
             clause = ""
             if (random.randint(0, 1) == 0):
@@ -56,7 +64,7 @@ class TestGenrator:
                 clause += random.choice(string.ascii_lowercase)
             else:
                 clause += random.choice(string.ascii_lowercase)
-            
+
             if (len(clause) > 1):
                 if (random.randint(0, 1) == 0):
                     if (clause[-4] == "=" or clause[-4] == "|") and clause[-5] != "<":
@@ -76,7 +84,7 @@ class TestGenrator:
             file.write("ASK\n")
             file.write(random.choice(string.ascii_lowercase))
 
-    def generateGeneralLogic(self,filename, number):
+    def generateGeneralLogic(self, filename, number):
         with open(filename, "w") as file:
             file.write("")
         self.clauses = []
@@ -88,7 +96,7 @@ class TestGenrator:
             secondSymbol = random.choice(self.symbols)
             while (firstSymbol == secondSymbol):
                 secondSymbol = random.choice(self.symbols)
-                
+
             if (random.randint(0, 1) == 0):
                 firstSymbol = "~"+firstSymbol
 
@@ -108,19 +116,13 @@ class TestGenrator:
             clause += ")"
             self.symbols.append(clause)
             with open(filename, "a") as file:
-                    file.write(clause)
-                    file.write("\n")
-
-
-
-        
-        
-       
+                file.write(clause)
+                file.write("\n")
 
 
 if __name__ == "__main__":
     # test1 = testGenrator()
     # test1.generateHornCase()
     import sys
-    test2 =TestGenrator()
+    test2 = TestGenerator()
     test2.generateGeneralLogic(sys.argv[1])
