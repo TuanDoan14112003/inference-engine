@@ -198,7 +198,7 @@ if __name__ == "__main__":
     # clause = parseClause("(a || b || c || d || ~e) & (c || ~d) & a & c")
     # print(isCNF(clause))
 
-    clause = parseClause("a => ~(b & c)")
+    clause = parseClause("~(a=>b)")
     newClause = convertToCNF(clause)
     print(newClause)
     print(isCNF(parseClause("~a||~b||~c")))
