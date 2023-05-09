@@ -1,0 +1,4 @@
+TELL
+x; q<=>n||d; y; q; r&j=>i; z; c<=>e=>u; k=>m=>e; h<=>c=>g; 
+ASK
+l
