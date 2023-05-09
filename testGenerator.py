@@ -1,6 +1,6 @@
 import random
 import string
-class testGenrator:
+class TestGenrator:
     def __init__(self):
         self.symbols = []
         self.clauses = []
@@ -19,7 +19,7 @@ class testGenrator:
                 clause += random.choice(string.ascii_lowercase)
             self.clauses.append(clause)
         
-        with open("horn.txt", "a") as file:
+        with open("horn.txt", "w") as file:
             file.write("TELL\n")
             for clause in self.clauses:    
                 file.write(clause)
@@ -66,9 +66,8 @@ class testGenrator:
                         clause += ")"
                         clause = clause[:-6]+"("+clause[-6:]
             self.clauses.append(clause)
-            
 
-        with open("general.txt", "a") as file:
+        with open("general.txt", "w") as file:
             file.write("TELL\n")
             for clause in self.clauses:
                 file.write(clause)
@@ -77,9 +76,51 @@ class testGenrator:
             file.write("ASK\n")
             file.write(random.choice(string.ascii_lowercase))
 
+    def generateGeneralLogic(self,filename, number):
+        with open(filename, "w") as file:
+            file.write("")
+        self.clauses = []
+        self.symbols = []
+        self.symbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
+        for i in range(0, number):
+            clause = "("
+            firstSymbol = random.choice(self.symbols)
+            secondSymbol = random.choice(self.symbols)
+            while (firstSymbol == secondSymbol):
+                secondSymbol = random.choice(self.symbols)
+                
+            if (random.randint(0, 1) == 0):
+                firstSymbol = "~"+firstSymbol
+
+            if (random.randint(0, 1) == 0):
+                secondSymbol = "~"+secondSymbol
+            clause += firstSymbol
+            operator = random.randint(0, 2)
+            if operator == 0:
+                clause += "&"
+            elif operator == 1:
+                clause += "||"
+            elif operator == 2:
+                clause += "=>"
+            elif operator == 3:
+                clause += "<=>"
+            clause += secondSymbol
+            clause += ")"
+            self.symbols.append(clause)
+            with open(filename, "a") as file:
+                    file.write(clause)
+                    file.write("\n")
+
+
+
+        
+        
+       
+
 
 if __name__ == "__main__":
     # test1 = testGenrator()
     # test1.generateHornCase()
-    test2 = testGenrator()
-    test2.generateGeneralCase()
+    import sys
+    test2 =TestGenrator()
+    test2.generateGeneralLogic(sys.argv[1])

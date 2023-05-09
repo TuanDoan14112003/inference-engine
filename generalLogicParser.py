@@ -175,7 +175,7 @@ def convertToCNF(clause):
         return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
 
     final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
-    # print(final)
+    print(final)
     if isCNF(final):
         return final
     else:
@@ -196,15 +196,16 @@ if __name__ == "__main__":
     # clause = parseClause("~(a=>b)")
 
     # clause = parseClause("(a || b || c || d || ~e) & (c || ~d) & a & c")
-    # print(isCNF(clause))
+    # # print(isCNF(clause))
 
-    clause = parseClause("a => ~(b & c)")
-    newClause = convertToCNF(clause)
-    print(newClause)
-    print(isCNF(parseClause("~a||~b||~c")))
+    # clause = parseClause("(~(~(~d&f)||~(~(~b&~f)&~a))||~(~b&~f))")
+    # newClause = convertToCNF(clause)
+    print(isCNF(parseClause("((b||f)||((~a)||(~a)))")))
+    # print(newClause)
+    # print(isCNF(parseClause("~a||~b||~c")))
     #
-    # import sympy
-    # print(sympy.to_cnf("a >> ~(b & c)"))
+    import sympy
+    print(sympy.to_cnf("(~(~(~d&f)|~(~(~b&~f)&~a))|~(~b&~f))"))
     # clause2 = parseClause("~(a=>b)")
     # print(newClause == clause2)
     # print(sympy.simplify("(((d|((~c)|(~c)))&(d|((~c)|(~a))))&((d|(b|(~c)))&(d|(b|(~a)))))"))
