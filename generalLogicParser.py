@@ -79,6 +79,11 @@ def isCNF(clause):
         if clause.operator == "~":
             return isinstance(clause.right.right,PropositionalSymbol)
         if clause.operator == "||":
+
+            if isinstance(clause.left.right,PropositionalSymbol) or (clause.left.operator == "~" and isinstance(clause.left.right.right,PropositionalSymbol)):
+                if isinstance(clause.right.right,PropositionalSymbol) or (clause.right.operator == "~" and isinstance(clause.right.right.right,PropositionalSymbol)):
+                    return True
+
             if not isinstance(clause.left.right,PropositionalSymbol):
                 if clause.left.operator != "||":
                     return False
@@ -89,9 +94,6 @@ def isCNF(clause):
             if not isinstance(clause.left.right,PropositionalSymbol) or not isinstance(clause.right.right,PropositionalSymbol):
                 return isCNF(clause.left) and isCNF(clause.right)
 
-            if isinstance(clause.left.right,PropositionalSymbol) or (clause.left.operator == "~" and isinstance(clause.left.right.right,PropositionalSymbol)):
-                if isinstance(clause.right.right,PropositionalSymbol) or (clause.right.operator == "~" and isinstance(clause.right.right.right,PropositionalSymbol)):
-                    return True
 
             return False
         if clause.operator == "&":
@@ -144,19 +146,20 @@ def convertToCNF(clause):
             newRight = convertToCNF(Clause(operator="~", right=convertToCNF(clause.right.right)))
             return convertToCNF(Clause(left=newLeft, right=newRight, operator="&"))
 
-    #distributive
+    #distributive ( a || (b&c))
     elif clause.operator == "||" and clause.right.operator == "&":
         newLeft = convertToCNF(Clause(operator = "||", left= convertToCNF(clause.left),right = convertToCNF(clause.right.left)))
         newRight = convertToCNF(Clause(operator = "||",left = convertToCNF(clause.left),right = convertToCNF(clause.right.right)))
         return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
 
-    # reverse distributive
+    #distributive ( (b&c) || a)
     elif clause.operator == "||" and clause.left.operator == "&":
         newLeft = convertToCNF(Clause(operator = "||", left= convertToCNF(clause.right),right = convertToCNF(clause.left.left)))
         newRight = convertToCNF(Clause(operator = "||",left = convertToCNF(clause.right),right = convertToCNF(clause.left.right)))
         return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
 
     final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
+    print(final)
     if isCNF(final):
         return final
     else:
@@ -179,12 +182,12 @@ if __name__ == "__main__":
     # clause = parseClause("(a || b || c || d || ~e) & (c || ~d) & a & c")
     # print(isCNF(clause))
 
-    clause = parseClause("b || c || d || e")
+    clause = parseClause("a || b || c || (d & f)")
     newClause = convertToCNF(clause)
     print(newClause)
-    print(isCNF(parseClause("b || c || d || e")))
+    # print(isCNF(parseClause(" a || b || (e  || f) || c || d")))
     #
     import sympy
-    print(sympy.to_cnf("b | c | d | e"))
+    print(sympy.to_cnf("a | b | c | (d & f)"))
     # clause2 = parseClause("~(a=>b)")
     # print(newClause == clause2)
