@@ -80,26 +80,42 @@ def isCNF(clause):
             return isinstance(clause.right.right,PropositionalSymbol)
         if clause.operator == "||":
 
-            if isinstance(clause.left.right,PropositionalSymbol) or (clause.left.operator == "~" and isinstance(clause.left.right.right,PropositionalSymbol)):
-                if isinstance(clause.right.right,PropositionalSymbol) or (clause.right.operator == "~" and isinstance(clause.right.right.right,PropositionalSymbol)):
-                    return True
+            # if isinstance(clause.left.right,PropositionalSymbol) or (clause.left.operator == "~" and isinstance(clause.left.right.right,PropositionalSymbol)):
+            #     if isinstance(clause.right.right,PropositionalSymbol) or (clause.right.operator == "~" and isinstance(clause.right.right.right,PropositionalSymbol)):
+            #         return True
+            #
+            # if not isinstance(clause.left.right,PropositionalSymbol):
+            #     if clause.left.operator != "||":
+            #         return False
+            # if not isinstance(clause.right.right,PropositionalSymbol):
+            #     if clause.right.operator != "||":
+            #         return False
+            #
+            # if not isinstance(clause.left.right,PropositionalSymbol) or not isinstance(clause.right.right,PropositionalSymbol):
+            #     return isCNF(clause.left) and isCNF(clause.right)
+            # return False
+            return isDisjunctionOfLiterals(clause)
 
-            if not isinstance(clause.left.right,PropositionalSymbol):
-                if clause.left.operator != "||":
-                    return False
-            if not isinstance(clause.right.right,PropositionalSymbol):
-                if clause.right.operator != "||":
-                    return False
-
-            if not isinstance(clause.left.right,PropositionalSymbol) or not isinstance(clause.right.right,PropositionalSymbol):
-                return isCNF(clause.left) and isCNF(clause.right)
 
 
-            return False
         if clause.operator == "&":
             return isCNF(clause.left) and isCNF(clause.right)
 
     return False
+
+def isDisjunctionOfLiterals(clause):
+    if clause.operator != "||":
+        return False
+    if isLiteral(clause.right) and isLiteral(clause.left) and clause.operator == "||":
+        return True
+    if isLiteral(clause.right):
+        return isDisjunctionOfLiterals(clause.left)
+    if isLiteral(clause.left):
+        return isDisjunctionOfLiterals(clause.right)
+    return False
+
+def isLiteral(clause):
+    return isinstance(clause.right,PropositionalSymbol) or (clause.operator == "~" and isinstance(clause.right.right,PropositionalSymbol))
 
 
 
@@ -159,7 +175,7 @@ def convertToCNF(clause):
         return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
 
     final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
-    print(final)
+    # print(final)
     if isCNF(final):
         return final
     else:
@@ -182,12 +198,16 @@ if __name__ == "__main__":
     # clause = parseClause("(a || b || c || d || ~e) & (c || ~d) & a & c")
     # print(isCNF(clause))
 
-    clause = parseClause("a || b || c || (d & f)")
+    clause = parseClause("a => ~(b & c)")
     newClause = convertToCNF(clause)
     print(newClause)
-    # print(isCNF(parseClause(" a || b || (e  || f) || c || d")))
+    print(isCNF(parseClause("~a||~b||~c")))
     #
-    import sympy
-    print(sympy.to_cnf("a | b | c | (d & f)"))
+    # import sympy
+    # print(sympy.to_cnf("a >> ~(b & c)"))
     # clause2 = parseClause("~(a=>b)")
     # print(newClause == clause2)
+    # print(sympy.simplify("(((d|((~c)|(~c)))&(d|((~c)|(~a))))&((d|(b|(~c)))&(d|(b|(~a)))))"))
+    # print(sympy.simplify("(d | ~c) & (b | d | ~a)"))
+
+    # print(isDisjunctionOfLiterals(parseClause("a & a")))

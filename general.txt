@@ -1,4 +1,10 @@
 TELL
 x; q<=>n||d; y; q; r&j=>i; z; c<=>e=>u; k=>m=>e; h<=>c=>g; 
 ASK
-l
+lTELL
+b<=>y&h; q=>g&a; c&q<=>r; q; h; v; z; v; l||g<=>z; 
+ASK
+sTELL
+x; o=>z||k; q&w&m; w||z=>y; h<=>a<=>x; k=>d&p; n<=>m||l; g=>g<=>g; e; 
+ASK
+y
