@@ -14,7 +14,6 @@ class BCAlgorithm:
         self.visited = []
         while self.frontier:
             current = self.frontier.pop()
-            print("current",current)
             if current.operator is None and current.left is None:
                 if current.right.symbol not in self.visited:
                     self.visited.append(current.right.symbol)
@@ -26,7 +25,7 @@ class BCAlgorithm:
                         if clause.operator == "=>":
                                 if (clause.right == current):
                                     self.frontier.append(clause.left)
-                                    self.previous.append({"left": clause.left, "right": current})
+                                    self.previous.append({"left": clause.left, "right": current, "operator": "=>"})
             else:
                 if (current.left.right.symbol in self.foundSymbols) and (current.right.right.symbol in self.foundSymbols):
                     inferred[current.right.right.symbol] = True
