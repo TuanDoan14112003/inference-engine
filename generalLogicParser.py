@@ -175,10 +175,8 @@ def convertToCNF(clause):
         return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
 
     final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
-    print(final)
-    # if isCNF(final):
-    import sympy
-    if sympy.logic.boolalg.is_cnf(str(final).replace("=>",">>").replace("||","|")):
+    # print(final)
+    if isCNF(final):
         return final
     else:
         return convertToCNF(final)
