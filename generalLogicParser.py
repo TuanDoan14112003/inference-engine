@@ -108,9 +108,9 @@ def isDisjunctionOfLiterals(clause):
         return False
     if isLiteral(clause.right) and isLiteral(clause.left) and clause.operator == "||":
         return True
-    if isLiteral(clause.right):
+    if isLiteral(clause.right) or isDisjunctionOfLiterals(clause.right):
         return isDisjunctionOfLiterals(clause.left)
-    if isLiteral(clause.left):
+    if isLiteral(clause.left) or isDisjunctionOfLiterals(clause.left):
         return isDisjunctionOfLiterals(clause.right)
     return False
 
