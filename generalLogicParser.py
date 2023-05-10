@@ -109,9 +109,9 @@ def isDisjunctionOfLiterals(clause):
     if isLiteral(clause.right) and isLiteral(clause.left) and clause.operator == "||":
         return True
     if isLiteral(clause.right) or isDisjunctionOfLiterals(clause.right):
-        return isDisjunctionOfLiterals(clause.left)
+        return isDisjunctionOfLiterals(clause.left) or isLiteral(clause.left)
     if isLiteral(clause.left) or isDisjunctionOfLiterals(clause.left):
-        return isDisjunctionOfLiterals(clause.right)
+        return isDisjunctionOfLiterals(clause.right) or isLiteral(clause.right)
     return False
 
 def isLiteral(clause):
@@ -176,7 +176,9 @@ def convertToCNF(clause):
 
     final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
     print(final)
-    if isCNF(final):
+    # if isCNF(final):
+    import sympy
+    if sympy.logic.boolalg.is_cnf(str(final).replace("=>",">>").replace("||","|")):
         return final
     else:
         return convertToCNF(final)
@@ -200,12 +202,14 @@ if __name__ == "__main__":
 
     # clause = parseClause("(~(~(~d&f)||~(~(~b&~f)&~a))||~(~b&~f))")
     # newClause = convertToCNF(clause)
-    print(isCNF(parseClause("((b||f)||((~a)||(~a)))")))
+    # print(convertToCNF(parseClause("(~(~(~d&f)||~(~(~b&~f)&~a))||~(~b&~f))")))
     # print(newClause)
-    # print(isCNF(parseClause("~a||~b||~c")))
+    print(convertToCNF(parseClause("(~(b=>~((~b=>h)&~c))&f)")))
     #
-    import sympy
-    print(sympy.to_cnf("(~(~(~d&f)|~(~(~b&~f)&~a))|~(~b&~f))"))
+    # print(sympy.to_cnf("(~(b=>~(((~b=>h)&~c)&(~(~(~f=>~e)||~i)||~(h||d))))&f)".replace("||","|").replace("=>",">>")))
+    from sympy.logic.boolalg import is_cnf
+    # print(is_cnf("((((b|f)|(~d))&((b|f)|f))&((((b|f)|((~a)|(~a)))&((b|f)|((~a)||b)))&(((b|f)||(f|(~a)))&((b|f)||(f|b)))))".replace("||","|")))
+    # print(sympy.simplify("(b | f) & (b | f | ~a) & (b | f | ~d)"))
     # clause2 = parseClause("~(a=>b)")
     # print(newClause == clause2)
     # print(sympy.simplify("(((d|((~c)|(~c)))&(d|((~c)|(~a))))&((d|(b|(~c)))&(d|(b|(~a)))))"))

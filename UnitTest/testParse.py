@@ -7,42 +7,52 @@ import generalLogicParser as parser
 import unittest
 from testGenerator import TestGenerator
 import sympy
+from sympy.logic.boolalg import  is_cnf
+from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 #generate a simple unit test
 
 class TestCNF(unittest.TestCase):
-    def testGeneralLogicParser(self):
+
+    @classmethod
+    def setUpClass(cls):
         testGenerator = TestGenerator()
-        testGenerator.generateGeneralLogic("testcases/generalClause.txt",5000)
-        with open("testcases/general.txt", "r") as file:
+        testGenerator.generateGeneralLogic("testcases/generalClause.txt", 100)
+
+    def testGeneralLogicParser(self):
+        with open("testcases/generalClause.txt", "r") as file:
             line = file.readline().strip()
             while line:
-                
-                exp1 = sympy.parsing.sympy_parser.parse_expr(
-                    line.replace("=>", ">>").replace("||","|"))
-                exp2 = sympy.parsing.sympy_parser.parse_expr(
-                    str(parser.parseClause(line)).replace("=>", ">>").replace("||", "|"))
+
+                exp1 = sympy_parser(line.replace("=>", ">>").replace("||","|"))
+                exp2 = sympy_parser(str(parser.parseClause(line)).replace("=>", ">>").replace("||", "|"))
                 print(parser.parseClause(line))
                 print("vs")
-                print(sympy.parsing.sympy_parser.parse_expr(line.replace("=>", ">>").replace("||", "|")))
+                print(exp2)
                 print("*"*20)
                 self.assertTrue(exp1.equals(exp2))
                 line = file.readline().strip()
                 
     def testCNF(self):
-        testGenerator = TestGenerator()
-        testGenerator.generateGeneralLogic("testcases/cnf.txt", 5000)
-        with open("testcases/cnf.txt", "r") as file:
+
+        with open("testcases/generalClause.txt", "r") as file:
             line = file.readline().strip()
+            count = 1
             while line:
-                exp1 = str(parser.convertToCNF(parser.parseClause("((b||f)||((~a)||(~a)))")))
+                exp1 = parser.convertToCNF(parser.parseClause(line))
                 exp2 = sympy.to_cnf(line.replace(
                     "=>", ">>").replace("||", "|"))
-                print(parser.parseClause(line))
+                print(count)
+                print(exp1)
                 print("vs")
-                print(sympy.to_cnf(line.replace("=>", ">>").replace("||", "|")))
+                print(exp2)
                 print("*"*20)
-                self.assertTrue(exp1.equals(exp2))
+
+
+                self.assertTrue(is_cnf(str(exp1).replace(
+                    "=>", ">>").replace("||", "|")))
+                self.assertTrue(exp2.equals(sympy_parser(str(exp1).replace("=>", ">>").replace("||","|"))))
                 line = file.readline().strip()
+                count += 1
 
 if __name__ == '__main__':
     unittest.main()
