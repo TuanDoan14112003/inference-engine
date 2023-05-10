@@ -12,7 +12,8 @@ class TestGenerator:
         self.clauses = []
         self.symbols = []
         self.symbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
-        for i in range(0, 10):
+        for i in range(50):
+            self.clauses = []
             for j in range(1, 10):
                 clause = ""
                 if (random.randint(0, 1) == 0):
@@ -26,7 +27,7 @@ class TestGenerator:
                     clause += random.choice(self.symbols)
                 self.clauses.append(clause)
 
-            with open(filename+str(i)+".txt", "w") as file:
+            with open(filename+"horn"+str(i)+".txt", "w") as file:
                 file.write("TELL\n")
                 for clause in self.clauses:
                     file.write(clause)
@@ -93,12 +94,11 @@ class TestGenerator:
             clause = "("
             firstSymbol = random.choice(list(self.symbols.keys()))
             secondSymbol = random.choice(list(self.symbols.keys()))
-            while self.symbols[firstSymbol] +  self.symbols[secondSymbol] > maxdepth:
+            while self.symbols[firstSymbol] +  self.symbols[secondSymbol] > maxdepth or firstSymbol == secondSymbol:
                 firstSymbol = random.choice(list(self.symbols.keys()))
                 secondSymbol = random.choice(list(self.symbols.keys()))
             depth = self.symbols[firstSymbol] + self.symbols[secondSymbol]
-            while (firstSymbol == secondSymbol):
-                secondSymbol = random.choice(list(self.symbols.keys()))
+            
 
             if (random.randint(0, 1) == 0):
                 firstSymbol = "~"+firstSymbol
@@ -131,4 +131,4 @@ if __name__ == "__main__":
     # test1.generateHornCase()
     import sys
     test2 = TestGenerator()
-    test2.generateGeneralLogic("general.txt",100, 3)
+    test2.generateHornCase("UnitTest/testcases/")

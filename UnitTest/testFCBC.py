@@ -1,4 +1,4 @@
-from environment import Environment
+
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -6,24 +6,60 @@ import unittest
 from forwardChainingAlgorithm import ForwardChaining
 from backwardChainingAlgorithm import BCAlgorithm
 from testGenerator import TestGenerator
-
-
+from environment import Environment
+from sympy.logic.inference import entails
+from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 
 class TestFCBC(unittest.TestCase):
+    # @classmethod
+    # def setUpClass(cls):
+    #     testGenerator = TestGenerator()
+    #     testGenerator.generateHornCase("UnitTest/testcases/horns/")
     def test_1(self):
-        testGenerator = TestGenerator()
-        testGenerator.generateHornCase("testcases/hornClause")
-        for i in range(1,10):
+        
+        for i in range(50):
             env = Environment()
-            env.readFile("testcases/hornClause"+str(i)+".txt")
+            env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
             forwardChaining = ForwardChaining()
             backwardChaining = BCAlgorithm()
-            self.assertEqual(forwardChaining.forwardChainingEntails(
-                env.knowledgeBase, env.symbols, env.query), 
-                backwardChaining.backwardChainingEntails(env.knowledgeBase, env.symbols, env.query))
+            FCresult = forwardChaining.forwardChainingEntails(
+                env.knowledgeBase, env.symbols, env.query)
+            BCresult = backwardChaining.backwardChainingEntails(
+                env.knowledgeBase, env.symbols, env.query)
+            print(i)
+            print("FC: ",FCresult )
+            print("BC: ", BCresult)
+            print("*"*20)
+            self.assertEqual(FCresult,BCresult)              
 
+    # def test_2(self):
+    #     for i in range(50):
+    #         print(i)
+    #         env = Environment()
+    #         env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
+    #         forwardChaining = ForwardChaining()
+    #         kb = []
+    #         query = sympy_parser(str(env.query).replace("=>", ">>").replace("||","|"))
+    #         for clause in env.knowledgeBase:
+    #             kb.append(sympy_parser(str(clause).replace(
+    #                 "=>", ">>").replace("||", "|"))) 
+    #         self.assertEqual(forwardChaining.forwardChainingEntails(env.knowledgeBase,env.symbols, env.query),entails(query,kb))
 
-    
+    # def test_3(self):
+    #     for i in range( 50):
+    #         env = Environment()
+    #         env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
+    #         BCC = BCAlgorithm()
+    #         kb = []
+    #         query = sympy_parser(str(env.query).replace(
+    #             "=>", ">>").replace("||", "|"))
+    #         for clause in env.knowledgeBase:
+    #             kb.append(sympy_parser(str(clause).replace(
+    #                 "=>", ">>").replace("||", "|")))
+    #         self.assertEqual(BCC.backwardChainingEntails(
+    #             env.knowledgeBase, env.symbols, env.query), entails(query, kb))
+          
+
 
 if __name__ == "__main__":
     unittest.main()

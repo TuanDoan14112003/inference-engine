@@ -16,7 +16,7 @@ class TestCNF(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         testGenerator = TestGenerator()
-        testGenerator.generateGeneralLogic("UnitTest/testcases/generalClause.txt", 100,3)
+        testGenerator.generateGeneralLogic("UnitTest/testcases/generalClause.txt", 1000,3)
 
     def testGeneralLogicParser(self):
         with open("UnitTest/testcases/generalClause.txt", "r") as file:
@@ -40,11 +40,11 @@ class TestCNF(unittest.TestCase):
                 exp1 = parser.convertToCNF(parser.parseClause(line))
                 exp2 = sympy.to_cnf(line.replace(
                     "=>", ">>").replace("||", "|"))
-                print(count)
-                print(exp1)
-                print("vs")
-                print(exp2)
-                print("*"*20)
+                print(line)
+                # print(exp1)
+                # print("vs")
+                # print(exp2)
+                # print("*"*20)
 
 
                 self.assertTrue(is_cnf(str(exp1).replace(

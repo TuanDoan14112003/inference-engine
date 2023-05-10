@@ -21,7 +21,7 @@ class BCAlgorithm:
                         if clause.operator is None and clause.left is None:
                                 if (clause.right == current.right):
                                     inferred[current.right.symbol] = True
-                    for clause in knowledgeBase:
+                    # for clause in knowledgeBase:
                         if clause.operator == "=>":
                                 if (clause.right == current):
                                     self.frontier.append(clause.left)
@@ -29,6 +29,7 @@ class BCAlgorithm:
             else:
                 if (current.left.right.symbol in self.foundSymbols) and (current.right.right.symbol in self.foundSymbols):
                     inferred[current.right.right.symbol] = True
+                    inferred[current.left.right.symbol] = True
                 else:
                     if current.left.right.symbol not in self.visited:
                         self.frontier.append(current.left)
@@ -51,7 +52,7 @@ if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("file.txt")
+    env.readFile("UnitTest/testcases/horns/horn22.txt")
 
     tt = BCAlgorithm()
     print(tt.backwardChainingEntails(env.knowledgeBase,env.symbols, env.query))

@@ -175,7 +175,7 @@ def convertToCNF(clause):
         return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
 
     final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
-    print(final)
+    # print(final)
     # if isCNF(final):
     import sympy
     if sympy.logic.boolalg.is_cnf(str(final).replace("=>",">>").replace("||","|")):
@@ -191,7 +191,6 @@ if __name__ == "__main__":
     # print(oldClause)
 
     import sympy
-
     # from sympy.logic.boolalg import is_cnf
     # print(is_cnf("a & ~b"))
     # # test cnf
@@ -204,10 +203,11 @@ if __name__ == "__main__":
     # newClause = convertToCNF(clause)
     # print(convertToCNF(parseClause("(~(~(~d&f)||~(~(~b&~f)&~a))||~(~b&~f))")))
     # print(newClause)
-    print(convertToCNF(parseClause("(~(b=>~((~b=>h)&~c))&f)")))
+    print(convertToCNF(parseClause("(~c=>~c)")))
     #
-    # print(sympy.to_cnf("(~(b=>~(((~b=>h)&~c)&(~(~(~f=>~e)||~i)||~(h||d))))&f)".replace("||","|").replace("=>",">>")))
-    from sympy.logic.boolalg import is_cnf
+    print(sympy.to_cnf("(~c=>~c)".replace("||", "|").replace("=>", ">>")))
+    print(sympy.a)
+    # from sympy.logic.boolalg import is_cnf
     # print(is_cnf("((((b|f)|(~d))&((b|f)|f))&((((b|f)|((~a)|(~a)))&((b|f)|((~a)||b)))&(((b|f)||(f|(~a)))&((b|f)||(f|b)))))".replace("||","|")))
     # print(sympy.simplify("(b | f) & (b | f | ~a) & (b | f | ~d)"))
     # clause2 = parseClause("~(a=>b)")
