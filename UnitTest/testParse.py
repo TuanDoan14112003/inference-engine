@@ -16,13 +16,12 @@ class TestCNF(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         testGenerator = TestGenerator()
-        testGenerator.generateGeneralLogic("testcases/generalClause.txt", 100)
+        testGenerator.generateGeneralLogic("UnitTest/testcases/generalClause.txt", 100,3)
 
     def testGeneralLogicParser(self):
-        with open("testcases/generalClause.txt", "r") as file:
+        with open("UnitTest/testcases/generalClause.txt", "r") as file:
             line = file.readline().strip()
             while line:
-
                 exp1 = sympy_parser(line.replace("=>", ">>").replace("||","|"))
                 exp2 = sympy_parser(str(parser.parseClause(line)).replace("=>", ">>").replace("||", "|"))
                 print(parser.parseClause(line))
@@ -34,7 +33,7 @@ class TestCNF(unittest.TestCase):
                 
     def testCNF(self):
 
-        with open("testcases/generalClause.txt", "r") as file:
+        with open("UnitTest/testcases/generalClause.txt", "r") as file:
             line = file.readline().strip()
             count = 1
             while line:
