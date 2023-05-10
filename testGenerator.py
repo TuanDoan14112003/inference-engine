@@ -84,18 +84,21 @@ class TestGenerator:
             file.write("ASK\n")
             file.write(random.choice(string.ascii_lowercase))
 
-    def generateGeneralLogic(self, filename, number):
+    def generateGeneralLogic(self, filename, number, maxdepth=10):
         with open(filename, "w") as file:
             file.write("")
         self.clauses = []
-        self.symbols = []
-        self.symbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
+        self.symbols = {symbol: 1 for symbol in list(string.ascii_lowercase[:7])}
         for i in range(0, number):
             clause = "("
-            firstSymbol = random.choice(self.symbols)
-            secondSymbol = random.choice(self.symbols)
+            firstSymbol = random.choice(list(self.symbols.keys()))
+            secondSymbol = random.choice(list(self.symbols.keys()))
+            while self.symbols[firstSymbol] +  self.symbols[secondSymbol] > maxdepth:
+                firstSymbol = random.choice(list(self.symbols.keys()))
+                secondSymbol = random.choice(list(self.symbols.keys()))
+            depth = self.symbols[firstSymbol] + self.symbols[secondSymbol]
             while (firstSymbol == secondSymbol):
-                secondSymbol = random.choice(self.symbols)
+                secondSymbol = random.choice(list(self.symbols.keys()))
 
             if (random.randint(0, 1) == 0):
                 firstSymbol = "~"+firstSymbol
@@ -114,10 +117,13 @@ class TestGenerator:
                 clause += "<=>"
             clause += secondSymbol
             clause += ")"
-            self.symbols.append(clause)
+            self.symbols.update({clause:depth})
+            
+            
             with open(filename, "a") as file:
                 file.write(clause)
                 file.write("\n")
+        print(self.symbols)
 
 
 if __name__ == "__main__":
@@ -125,4 +131,4 @@ if __name__ == "__main__":
     # test1.generateHornCase()
     import sys
     test2 = TestGenerator()
-    test2.generateGeneralLogic(sys.argv[1])
+    test2.generateGeneralLogic("general.txt",100, 3)
