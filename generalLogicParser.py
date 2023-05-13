@@ -120,6 +120,12 @@ def isLiteral(clause):
 
 
 def convertToCNF(clause):
+    print(clause)
+
+    if isCNF(clause):
+        return clause
+    # if clause.left == clause.right and clause.operator == "||":
+    #     return convertToCNF(clause.left)
     if clause.operator is None and clause.left is None and isinstance(clause.right,PropositionalSymbol):
         return Clause(right=PropositionalSymbol(symbol=clause.right.symbol))
     elif clause.operator == "~" and isinstance(clause.right.right,PropositionalSymbol):
@@ -176,10 +182,10 @@ def convertToCNF(clause):
 
     final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
     # print(final)
-    if isCNF(final):
-        return final
-    else:
-        return convertToCNF(final)
+    # if isCNF(final):
+    #     return final
+    # else:
+    return convertToCNF(final)
     # return final
 
 
@@ -201,10 +207,10 @@ if __name__ == "__main__":
     # newClause = convertToCNF(clause)
     # print(convertToCNF(parseClause("(~(~(~d&f)||~(~(~b&~f)&~a))||~(~b&~f))")))
     # print(newClause)
-    print(convertToCNF(parseClause("(~c=>~c)")))
+    print(convertToCNF(parseClause("(~((~b=>a)=>(~d&~c))&a)")))
     #
-    print(sympy.to_cnf("(~c=>~c)".replace("||", "|").replace("=>", ">>")))
-    print(sympy.a)
+    # print(sympy.to_cnf("(~c=>~c)".replace("||", "|").replace("=>", ">>")))
+    # print(sympy.a)
     # from sympy.logic.boolalg import is_cnf
     # print(is_cnf("((((b|f)|(~d))&((b|f)|f))&((((b|f)|((~a)|(~a)))&((b|f)|((~a)||b)))&(((b|f)||(f|(~a)))&((b|f)||(f|b)))))".replace("||","|")))
     # print(sympy.simplify("(b | f) & (b | f | ~a) & (b | f | ~d)"))

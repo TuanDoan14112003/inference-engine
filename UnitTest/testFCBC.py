@@ -11,10 +11,10 @@ from sympy.logic.inference import entails
 from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 
 class TestFCBC(unittest.TestCase):
-    # @classmethod
-    # def setUpClass(cls):
-    #     testGenerator = TestGenerator()
-    #     testGenerator.generateHornCase("UnitTest/testcases/horns/")
+    @classmethod
+    def setUpClass(cls):
+        testGenerator = TestGenerator()
+        testGenerator.generateHornCase("UnitTest/testcases/horns/")
     def test_1(self):
         
         for i in range(50):
@@ -32,32 +32,32 @@ class TestFCBC(unittest.TestCase):
             print("*"*20)
             self.assertEqual(FCresult,BCresult)              
 
-    # def test_2(self):
-    #     for i in range(50):
-    #         print(i)
-    #         env = Environment()
-    #         env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
-    #         forwardChaining = ForwardChaining()
-    #         kb = []
-    #         query = sympy_parser(str(env.query).replace("=>", ">>").replace("||","|"))
-    #         for clause in env.knowledgeBase:
-    #             kb.append(sympy_parser(str(clause).replace(
-    #                 "=>", ">>").replace("||", "|"))) 
-    #         self.assertEqual(forwardChaining.forwardChainingEntails(env.knowledgeBase,env.symbols, env.query),entails(query,kb))
+    def test_2(self):
+        for i in range(50):
+            print(i)
+            env = Environment()
+            env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
+            forwardChaining = ForwardChaining()
+            kb = []
+            query = sympy_parser(str(env.query).replace("=>", ">>").replace("||","|"))
+            for clause in env.knowledgeBase:
+                kb.append(sympy_parser(str(clause).replace(
+                    "=>", ">>").replace("||", "|")))
+            self.assertEqual(forwardChaining.forwardChainingEntails(env.knowledgeBase,env.symbols, env.query),entails(query,kb))
 
-    # def test_3(self):
-    #     for i in range( 50):
-    #         env = Environment()
-    #         env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
-    #         BCC = BCAlgorithm()
-    #         kb = []
-    #         query = sympy_parser(str(env.query).replace(
-    #             "=>", ">>").replace("||", "|"))
-    #         for clause in env.knowledgeBase:
-    #             kb.append(sympy_parser(str(clause).replace(
-    #                 "=>", ">>").replace("||", "|")))
-    #         self.assertEqual(BCC.backwardChainingEntails(
-    #             env.knowledgeBase, env.symbols, env.query), entails(query, kb))
+    def test_3(self):
+        for i in range( 50):
+            env = Environment()
+            env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
+            BCC = BCAlgorithm()
+            kb = []
+            query = sympy_parser(str(env.query).replace(
+                "=>", ">>").replace("||", "|"))
+            for clause in env.knowledgeBase:
+                kb.append(sympy_parser(str(clause).replace(
+                    "=>", ">>").replace("||", "|")))
+            self.assertEqual(BCC.backwardChainingEntails(
+                env.knowledgeBase, env.symbols, env.query), entails(query, kb))
           
 
 

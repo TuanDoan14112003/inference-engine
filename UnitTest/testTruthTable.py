@@ -9,7 +9,7 @@ from environment import Environment
 class TestTruthTable(unittest.TestCase):
     def test_1(self):
         env = Environment()
-        env.readFile("testcases/hornClause.txt")
+        env.readFile("UnitTest/testcases/hornClause.txt")
         truthTable = TruthTableAlgorithm()
         truthTable.checkAll(env.knowledgeBase, env.query, env.symbols, [])
         self.assertEqual(1, 1)

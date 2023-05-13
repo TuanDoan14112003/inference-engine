@@ -17,7 +17,7 @@ class ForwardChaining:
                 inferred[symbol] = True
                 for clause in knowledgeBase:
                     if clause.operator == "=>" and symbol in str(clause.left):
-                        count[clause] -= 1
+                        count[clause] -= str(clause.left).count(symbol)
                         if count[clause] == 0:
                             self.foundSymbols.append(clause.right.right.symbol)
                             if (clause.right == query):
