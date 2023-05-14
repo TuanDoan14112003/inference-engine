@@ -65,9 +65,11 @@ def parseClause(clauseString):
             if openParenthesis == closeParenthesis and clauseString[i] == "~":
                 rightClause = parseClause(clauseString[i + 1:])
 
-                return Clause(right=rightClause, operator="~")  # does not work with ~~a
+                # does not work with ~~a
+                return Clause(right=rightClause, operator="~")
 
         return parseClause(clauseString.strip()[1:-1])
+
 
 def isCNF(clause):
     operators = ["=>", "<=>"]
@@ -75,9 +77,9 @@ def isCNF(clause):
         return False
     else:
         if clause.operator is None:
-            return isinstance(clause.right,PropositionalSymbol)
+            return isinstance(clause.right, PropositionalSymbol)
         if clause.operator == "~":
-            return isinstance(clause.right.right,PropositionalSymbol)
+            return isinstance(clause.right.right, PropositionalSymbol)
         if clause.operator == "||":
 
             # if isinstance(clause.left.right,PropositionalSymbol) or (clause.left.operator == "~" and isinstance(clause.left.right.right,PropositionalSymbol)):
@@ -96,12 +98,11 @@ def isCNF(clause):
             # return False
             return isDisjunctionOfLiterals(clause)
 
-
-
         if clause.operator == "&":
             return isCNF(clause.left) and isCNF(clause.right)
 
     return False
+
 
 def isDisjunctionOfLiterals(clause):
     if clause.operator != "||":
@@ -114,71 +115,88 @@ def isDisjunctionOfLiterals(clause):
         return isDisjunctionOfLiterals(clause.right) or isLiteral(clause.right)
     return False
 
-def isLiteral(clause):
-    return isinstance(clause.right,PropositionalSymbol) or (clause.operator == "~" and isinstance(clause.right.right,PropositionalSymbol))
 
+def isLiteral(clause):
+    return isinstance(clause.right, PropositionalSymbol) or (clause.operator == "~" and isinstance(clause.right.right, PropositionalSymbol))
 
 
 def convertToCNF(clause):
-    if clause.operator is None and clause.left is None and isinstance(clause.right,PropositionalSymbol):
+    if clause.operator is None and clause.left is None and isinstance(clause.right, PropositionalSymbol):
         return Clause(right=PropositionalSymbol(symbol=clause.right.symbol))
-    elif clause.operator == "~" and isinstance(clause.right.right,PropositionalSymbol):
-        return Clause(operator="~",right=Clause(right=PropositionalSymbol(clause.right.right.symbol)))
-
-
+    elif clause.operator == "~" and isinstance(clause.right.right, PropositionalSymbol):
+        return Clause(operator="~", right=Clause(right=PropositionalSymbol(clause.right.right.symbol)))
 
     # eliminate implication
     if clause.operator == "=>":
-        newLeft = convertToCNF(Clause(right=convertToCNF(clause.left), operator="~"))
-        newRight = convertToCNF(clause.right)
-        return convertToCNF(Clause(left=newLeft, right=newRight, operator="||"))
+        # newLeft = convertToCNF(Clause(right=convertToCNF(clause.left), operator="~"))
+        # newRight = convertToCNF(clause.right)
+        return convertToCNF(Clause(left=Clause(right=clause.left, operator="~"), right=clause.right, operator="||"))
     elif clause.operator == "<=>":
-        newLeft = convertToCNF(Clause(operator="||",
-                         left=Clause(
-                             operator="~",
-                             right=convertToCNF(clause.left)
-                         ),
-                         right=convertToCNF(clause.right)
-                         ))
+        # newLeft = convertToCNF(Clause(operator="||",
+        #                               left=Clause(
+        #                                   operator="~",
+        #                                   right=convertToCNF(clause.left)
+        #                               ),
+        #                               right=convertToCNF(clause.right)
+        #                               ))
 
-        newRight = convertToCNF(Clause(operator="||",
-                          left=convertToCNF(clause.left),
-                          right=Clause(
-                              operator="~",
-                              right=convertToCNF(clause.right))))
+        # newRight = convertToCNF(Clause(operator="||",
+        #                                left=convertToCNF(clause.left),
+        #                                right=Clause(
+        #                                    operator="~",
+        #                                    right=convertToCNF(clause.right))))
 
-        return convertToCNF(Clause(left=newLeft, right=newRight, operator="&"))
+        return convertToCNF(Clause(left=Clause(operator="||",
+                                               left=Clause(
+                                                   operator="~",
+                                                   right=clause.left
+                                               ),
+                                               right=clause.right
+                                               ), right=Clause(operator="||",
+                                                               left=clause.left,
+                                                               right=Clause(
+                                                                   operator="~",
+                                                                   right=clause.right)), operator="&"))
 
-    #de morgan
+    # de morgan
     elif clause.operator == "~":
         if clause.right.operator == "~":
             return convertToCNF(clause.right.right)
         elif clause.right.operator == "&":
-            newLeft = convertToCNF(Clause( operator="~",right=convertToCNF(clause.right.left)))
-            newRight = convertToCNF(Clause( operator="~",right=convertToCNF(clause.right.right)))
-            return convertToCNF(Clause(left=newLeft, right=newRight, operator="||"))
+            # newLeft = convertToCNF(
+            #     Clause(operator="~", right=convertToCNF(clause.right.left)))
+            # newRight = convertToCNF(
+            #     Clause(operator="~", right=convertToCNF(clause.right.right)))
+            return convertToCNF(Clause(left=Clause(operator="~", right=clause.right.left), right=Clause(operator="~", right=clause.right.right), operator="||"))
         elif clause.right.operator == "||":
-            newLeft = convertToCNF(Clause( operator="~",right=convertToCNF(clause.right.left)))
-            newRight = convertToCNF(Clause(operator="~", right=convertToCNF(clause.right.right)))
-            return convertToCNF(Clause(left=newLeft, right=newRight, operator="&"))
+            # newLeft = convertToCNF(
+            #     Clause(operator="~", right=convertToCNF(clause.right.left)))
+            # newRight = convertToCNF(
+            #     Clause(operator="~", right=convertToCNF(clause.right.right)))
+            return convertToCNF(Clause(left=Clause(operator="~", right=clause.right.left), right=Clause(operator="~", right=clause.right.right), operator="&"))
 
-    #distributive ( a || (b&c))
+    # distributive ( a || (b&c))
     elif clause.operator == "||" and clause.right.operator == "&":
-        newLeft = convertToCNF(Clause(operator = "||", left= convertToCNF(clause.left),right = convertToCNF(clause.right.left)))
-        newRight = convertToCNF(Clause(operator = "||",left = convertToCNF(clause.left),right = convertToCNF(clause.right.right)))
-        return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
+        # newLeft = convertToCNF(Clause(operator="||", left=convertToCNF(
+        #     clause.left), right=convertToCNF(clause.right.left)))
+        # newRight = convertToCNF(Clause(operator="||", left=convertToCNF(
+        #     clause.left), right=convertToCNF(clause.right.right)))
+        return convertToCNF(Clause(left=Clause(operator="||", left=clause.left, right=clause.right.left), right=Clause(operator="||", left=clause.left, right=clause.right.right), operator="&"))
 
-    #distributive ( (b&c) || a)
+    # distributive ( (b&c) || a)
     elif clause.operator == "||" and clause.left.operator == "&":
-        newLeft = convertToCNF(Clause(operator = "||", left= convertToCNF(clause.right),right = convertToCNF(clause.left.left)))
-        newRight = convertToCNF(Clause(operator = "||",left = convertToCNF(clause.right),right = convertToCNF(clause.left.right)))
-        return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
+        # newLeft = convertToCNF(Clause(operator="||", left=convertToCNF(
+        #     clause.right), right=convertToCNF(clause.left.left)))
+        # newRight = convertToCNF(Clause(operator="||", left=convertToCNF(
+        #     clause.right), right=convertToCNF(clause.left.right)))
+        return convertToCNF(Clause(left=Clause(operator="||", left=clause.right, right=clause.left.left), right=Clause(operator="||", left=clause.right, right=clause.left.right), operator="&"))
 
-    final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
+    final = Clause(right=convertToCNF(clause.right), left=convertToCNF(
+        clause.left) if clause.left is not None else None, operator=clause.operator)
     print(final)
     # if isCNF(final):
     import sympy
-    if sympy.logic.boolalg.is_cnf(str(final).replace("=>",">>").replace("||","|")):
+    if sympy.logic.boolalg.is_cnf(str(final).replace("=>", ">>").replace("||", "|")):
         return final
     else:
         return convertToCNF(final)
@@ -207,7 +225,7 @@ if __name__ == "__main__":
     print(convertToCNF(parseClause("(~(b=>~((~b=>h)&~c))&f)")))
     #
     # print(sympy.to_cnf("(~(b=>~(((~b=>h)&~c)&(~(~(~f=>~e)||~i)||~(h||d))))&f)".replace("||","|").replace("=>",">>")))
-    from sympy.logic.boolalg import is_cnf
+    # from sympy.logic.boolalg import is_cnf
     # print(is_cnf("((((b|f)|(~d))&((b|f)|f))&((((b|f)|((~a)|(~a)))&((b|f)|((~a)||b)))&(((b|f)||(f|(~a)))&((b|f)||(f|b)))))".replace("||","|")))
     # print(sympy.simplify("(b | f) & (b | f | ~a) & (b | f | ~d)"))
     # clause2 = parseClause("~(a=>b)")
