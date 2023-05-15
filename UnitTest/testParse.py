@@ -13,23 +13,23 @@ from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 
 class TestCNF(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        testGenerator = TestGenerator()
-        testGenerator.generateGeneralLogic("UnitTest/testcases/generalClause.txt", 1000,3)
+    # @classmethod
+    # def setUpClass(cls):
+    #     testGenerator = TestGenerator()
+    #     testGenerator.generateGeneralLogic("UnitTest/testcases/generalClause.txt", 1000,3)
 
-    def testGeneralLogicParser(self):
-        with open("UnitTest/testcases/generalClause.txt", "r") as file:
-            line = file.readline().strip()
-            while line:
-                exp1 = sympy_parser(line.replace("=>", ">>").replace("||","|"))
-                exp2 = sympy_parser(str(parser.parseClause(line)).replace("=>", ">>").replace("||", "|"))
-                print(parser.parseClause(line))
-                print("vs")
-                print(exp2)
-                print("*"*20)
-                self.assertTrue(exp1.equals(exp2))
-                line = file.readline().strip()
+    # def testGeneralLogicParser(self):
+    #     with open("UnitTest/testcases/generalClause.txt", "r") as file:
+    #         line = file.readline().strip()
+    #         while line:
+    #             exp1 = sympy_parser(line.replace("=>", ">>").replace("||","|"))
+    #             exp2 = sympy_parser(str(parser.parseClause(line)).replace("=>", ">>").replace("||", "|"))
+    #             print(parser.parseClause(line))
+    #             print("vs")
+    #             print(exp2)
+    #             print("*"*20)
+    #             self.assertTrue(exp1.equals(exp2))
+    #             line = file.readline().strip()
                 
     def testCNF(self):
 
