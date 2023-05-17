@@ -9,10 +9,10 @@ from sympy.logic.inference import entails
 from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 
 class TestResolution(unittest.TestCase):
-    # @classmethod
-    # def setUpClass(cls):
-    #     testGenerator = TestGenerator()
-    #     testGenerator.generateHornCase("testcases/horns/")
+    @classmethod
+    def setUpClass(cls):
+        testGenerator = TestGenerator()
+        testGenerator.generateHornCase("testcases/horns/")
 
     def test(self):
         for i in range(50):
@@ -22,10 +22,11 @@ class TestResolution(unittest.TestCase):
             resolution = Resolution()
             kb = []
             query = sympy_parser(str(env.query).replace("=>", ">>").replace("||", "|"))
+
             for clause in env.knowledgeBase:
                 kb.append(sympy_parser(str(clause).replace(
                     "=>", ">>").replace("||", "|")))
-
+            print(entails(query, kb))
 
             self.assertEqual(resolution.solve(env.knowledgeBase, env.query),
                              entails(query, kb))

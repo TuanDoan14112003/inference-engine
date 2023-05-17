@@ -40,12 +40,17 @@ class TestGenerator:
         for i in range(50):
             self.symbols = list(string.ascii_letters[:10])
             clauses = []
-            for j in range(10):
-                edges = random.choices(self.symbols,k=random.randint(1,5))
+            for j in range(7):
+                tail = random.choices(self.symbols,k=random.randint(1,4))
+                negation = list(set(random.choices(tail,k = random.randint(0,len(tail)))))
+                tail = ["~" + symbol if symbol in negation else symbol for symbol in tail]
 
-                clauseString = "&".join(edges) + " =>" + random.choice(self.symbols)
+                clauseString = "&".join(tail) + " =>" + random.choice(self.symbols)
                 clauses.append(clauseString)
-            clauses.extend(random.choices(self.symbols,k=random.randint(1,5)))
+            query = list(set(random.choices(self.symbols,k=random.randint(1,7))))
+            negation = list(set(random.choices(query, k=random.randint(0, len(query)))))
+            query = ["~" + symbol if symbol in negation else symbol for symbol in query]
+            clauses.extend(query)
             with open(filename+"horn"+str(i)+".txt", "w") as file:
                 file.write("TELL\n")
                 for clause in clauses:
