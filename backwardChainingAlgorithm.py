@@ -52,7 +52,7 @@ if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("UnitTest/testcases/horns/horn22.txt")
+    env.readFile("UnitTest/testcases/horns/horn0.txt")
 
     tt = BCAlgorithm()
     print(tt.backwardChainingEntails(env.knowledgeBase,env.symbols, env.query))
