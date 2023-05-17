@@ -14,12 +14,12 @@ class TestFCBC(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         testGenerator = TestGenerator()
-        testGenerator.generateHornCase("UnitTest/testcases/horns/")
+        testGenerator.generateHornCase("testcases/horns/")
     def test_1(self):
         
         for i in range(50):
             env = Environment()
-            env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
+            env.readFile("testcases/horns/horn"+str(i)+".txt")
             forwardChaining = ForwardChaining()
             backwardChaining = BCAlgorithm()
             FCresult = forwardChaining.forwardChainingEntails(
@@ -36,7 +36,7 @@ class TestFCBC(unittest.TestCase):
         for i in range(50):
             print(i)
             env = Environment()
-            env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
+            env.readFile("testcases/horns/horn"+str(i)+".txt")
             forwardChaining = ForwardChaining()
             kb = []
             query = sympy_parser(str(env.query).replace("=>", ">>").replace("||","|"))
@@ -48,7 +48,7 @@ class TestFCBC(unittest.TestCase):
     def test_3(self):
         for i in range( 50):
             env = Environment()
-            env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
+            env.readFile("testcases/horns/horn"+str(i)+".txt")
             BCC = BCAlgorithm()
             kb = []
             query = sympy_parser(str(env.query).replace(

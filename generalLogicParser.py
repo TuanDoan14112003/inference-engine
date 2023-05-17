@@ -120,7 +120,7 @@ def isLiteral(clause):
 
 
 def convertToCNF(clause):
-    print(clause)
+    # print(clause)
 
     if isCNF(clause):
         return clause
