@@ -38,19 +38,24 @@ class TestGenerator:
 
     def generateHornCase(self, filename):
         for i in range(50):
-            self.symbols = list(string.ascii_letters[:10])
+            self.symbols = list(string.ascii_letters[:5])
             clauses = []
             for j in range(7):
-                tail = random.choices(self.symbols,k=random.randint(1,4))
-                negation = list(set(random.choices(tail,k = random.randint(0,len(tail)))))
-                tail = ["~" + symbol if symbol in negation else symbol for symbol in tail]
-
-                clauseString = "&".join(tail) + " =>" + random.choice(self.symbols)
-                clauses.append(clauseString)
-            query = list(set(random.choices(self.symbols,k=random.randint(1,7))))
-            negation = list(set(random.choices(query, k=random.randint(0, len(query)))))
-            query = ["~" + symbol if symbol in negation else symbol for symbol in query]
-            clauses.extend(query)
+                hornClause = list(set(random.choices(self.symbols,k=random.randint(1,5))))
+                tail = hornClause[:-1]
+                if len(hornClause) >= 2:
+                    head = hornClause[-1]
+                    negation = list(set(random.choices(tail,k = random.randint(0,len(tail)))))
+                    tail = ["~" + symbol if symbol in negation else symbol for symbol in tail]
+                    clauseString = "&".join(tail) + " =>" + head
+                    clauses.append(clauseString)
+            literal = list(set(random.choices(self.symbols,k=random.randint(1,3))))
+            negation = list(set(random.choices(literal, k=random.randint(0, len(literal)))))
+            literal = ["~" + symbol if symbol in negation else symbol for symbol in literal]
+            clauses.extend(literal)
+            query = random.choice(self.symbols)
+            while query in literal:
+                query = random.choice(self.symbols)
             with open(filename+"horn"+str(i)+".txt", "w") as file:
                 file.write("TELL\n")
                 for clause in clauses:
@@ -58,7 +63,7 @@ class TestGenerator:
                     file.write("; ")
                 file.write("\n")
                 file.write("ASK\n")
-                file.write(random.choice(self.symbols))
+                file.write(query)
 
 
 
