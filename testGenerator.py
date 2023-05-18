@@ -45,13 +45,9 @@ class TestGenerator:
                 tail = hornClause[:-1]
                 if len(hornClause) >= 2:
                     head = hornClause[-1]
-                    negation = list(set(random.choices(tail,k = random.randint(0,len(tail)))))
-                    tail = ["~" + symbol if symbol in negation else symbol for symbol in tail]
                     clauseString = "&".join(tail) + " =>" + head
                     clauses.append(clauseString)
             literal = list(set(random.choices(self.symbols,k=random.randint(1,3))))
-            negation = list(set(random.choices(literal, k=random.randint(0, len(literal)))))
-            literal = ["~" + symbol if symbol in negation else symbol for symbol in literal]
             clauses.extend(literal)
             query = random.choice(self.symbols)
             while query in literal:

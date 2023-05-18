@@ -24,9 +24,9 @@ class DPLLAlgorithm:
         #     return False
         return not self.dpll(clauses)
     def dpll(self,formula):
-        if formula == frozenset():
+        if formula == set():
             return True
-        if set() in formula:
+        if frozenset() in formula:
             return False
         for clause in formula:
             if len(clause) == 1:
@@ -62,20 +62,21 @@ class DPLLAlgorithm:
 if __name__ == "__main__":
     t = DPLLAlgorithm()
     from generalLogicParser import parseClause
-    # from environment import Environment
+    from environment import Environment
     # env = Environment()
     # env.readFile("UnitTest/testcases/horns/horn-3.txt")
     # dpll = DPLLAlgorithm()
     # print(dpll.solve(env.knowledgeBase,env.query))
     # print()
-    # dpll = DPLLAlgorithm()
-    # clause1 = parseClause("a&b => c")
-    # clause2 = parseClause("a")
-    # clause3 = parseClause("b")
-    # query = parseClause("c")
-    # print(dpll.solve(kb=[clause1,clause2,clause3],query=query))
 
-    # formula = {frozenset({"b","~a"}),frozenset({"a"})}
+
+    dpll = DPLLAlgorithm()
+    clause1 = parseClause("~a")
+    clause2 = parseClause("a")
+    query = parseClause("b")
+    print(dpll.solve(kb=[clause1,clause2],query=query))
+
+    # formula = {frozenset({'a'}), frozenset({'~a'}), frozenset({'~b'})}
     # dpll = DPLLAlgorithm()
     # print(dpll.symplify(formula,"a"))
 

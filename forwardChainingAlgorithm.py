@@ -3,6 +3,7 @@ class ForwardChaining:
         self.foundSymbols = []
 
     def forwardChainingEntails(self, knowledgeBase, symbols, query):
+        knowledgeBase = list({clause for clause in knowledgeBase}) # remove duplicate clause
         self.foundSymbols = []
         count = {clause: clause.left.getNumberOfOperands() for clause in knowledgeBase if clause.operator == "=>"}
         inferred = {symbol: False for symbol in symbols}
