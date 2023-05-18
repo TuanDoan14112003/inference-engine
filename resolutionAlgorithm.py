@@ -1,50 +1,80 @@
-import generalLogicParser as glp
-from propositionalSymbol import PropositionalSymbol
 from clause import Clause
-from copy import deepcopy
+from generalLogicParser import convertToCNF
+class Resolution:
+    def solve(self,kb,query):
+        cnfClausesList = []
+        for clause in kb:
+            cnfClausesList.append(convertToCNF(clause))
+        negationOfQuery = Clause(operator="~",right=query)
+        cnfClausesList.append(convertToCNF(negationOfQuery))
+        cnfClausesList = [str(clause).replace("(","").replace(")","") for clause in cnfClausesList]
+        clauses = []
+        for clause in cnfClausesList:
+            for disjunctionOfSymbol in clause.split("&"):
+                clauses.append(disjunctionOfSymbol)
+
+        clauses = [clause.split("||") for clause in clauses]
+        clauses = {frozenset(clause) for clause in clauses}
+
+        # print(clauses)
+        new = set()
+        while True:
+            clauseList = [list(clause) for clause in clauses]
+            print(len(clauseList))
+            for i in range(len(clauseList)-1):
+                for j in range(i+1,len(clauseList)):
+                    resolvents = []
+                    canBeResolved = False
+                    for literal in clauseList[i]:
+                        if literal[0] != "~" and (("~"+ literal) in clauseList[j]):
+                            result = [symbol for symbol in clauseList[i] if symbol != literal]
+                            result.extend([symbol for symbol in clauseList[j] if symbol != ("~" + literal)])
+                            resolvents.append(result)
+                            canBeResolved = True
+
+                        elif literal[0] == "~" and literal[1:] in clauseList[j]:
+                            result = [symbol for symbol in clauseList[i] if symbol != literal]
+                            result.extend([symbol for symbol in clauseList[j] if symbol != literal[1:] ])
+                            resolvents.append(result)
+                            canBeResolved = True
+                    if not canBeResolved:
+                        resolvents.append(clauseList[i].copy())
+                        resolvents.append(clauseList[j].copy())
+                    if [] in resolvents:
+                        return True
+
+                    resolventsSet = {frozenset(clause) for clause in resolvents}
+                    new = new.union(resolventsSet)
+
+            if new.issubset(clauses):
+                return False
+            clauses = clauses.union(new)
 
 
-class ResolutionAlgorithm:
-    def __init__(self, clauses, kb):
-        self.clauses = clauses
-        self.kb = kb
 
-    def resolve(self, clause1, clause2):
-        # if clause1 == clause2:
-        #     return
-        # if clause1.right == None:
-        #     return clause2
-        # if clause2.right == None:
-        #     return clause1
-        if (clause1.operator == "~" or clause2.operator == "~") and clause1.right == clause2.right and clause1.left == clause2.left:
-            return None
-        # if clause1.operator == "~":
-        #     if clause1[1:] in clause2:
-        #         return clause2.replace(clause1[1:], "")
-        # if clause2.operator == "~":
-        #     if clause2[1:] in clause1:
-        #         return clause1.replace(clause2[1:], "")
-        clause = Clause(left=clause1, operator="&", right=clause2)
-        clauseOuter = deepcopy(clause)
-        clauseInner = deepcopy(clause)
-        while (isinstance(clauseOuter.left.right, PropositionalSymbol)):
-            while (isinstance(clauseInner.left.right, PropositionalSymbol)):
-                if clauseOuter.right == clauseInner.right:
-                    return None
-                else:
-                    clauseInner = clauseInner.left
-            clauseOuter = clauseOuter.left
-        return clause
 
-    def resolution(self):
-        new = []
-        for i in range(len(self.clauses)):
-            for j in range(i+1, len(self.clauses)):
-                if self.resolve(self.clauses[i], self.clauses[j]) == None:
-                    return True
-                new.append(self.resolve(self.clauses[i], self.clauses[j]))
-                if self.resolve(self.clauses[i], self.clauses[j]) == None:
-                    return True
-                if new in self.clauses:
-                    return False
-                self.clauses += new
+
+
+if (__name__ == "__main__"):
+    "b&i => b; b&f => a;"
+    from generalLogicParser import parseClause
+    # from environment import Environment
+    # env = Environment()
+    # env.readFile("UnitTest/testcases/horns/horn-3.txt")
+    # resolution = Resolution()
+    # print(resolution.solve(env.knowledgeBase,env.query))
+
+
+    resolution = Resolution()
+    clause1 = parseClause("a&b&c&d&e => f")
+    clause2 = parseClause("a")
+    clause3 = parseClause("b")
+    clause4 = parseClause("c")
+    clause5 = parseClause("d")
+    clause6 = parseClause("e")
+    query = parseClause("f")
+    print(resolution.solve(kb=[clause1,clause2,clause3,clause4,clause5,clause6],query=query))
+
+
+
+

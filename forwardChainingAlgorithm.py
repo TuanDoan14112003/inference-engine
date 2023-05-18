@@ -3,6 +3,7 @@ class ForwardChaining:
         self.foundSymbols = []
 
     def forwardChainingEntails(self, knowledgeBase, symbols, query):
+        knowledgeBase = list({clause for clause in knowledgeBase}) # remove duplicate clause
         self.foundSymbols = []
         count = {clause: clause.left.getNumberOfOperands() for clause in knowledgeBase if clause.operator == "=>"}
         inferred = {symbol: False for symbol in symbols}
@@ -17,7 +18,7 @@ class ForwardChaining:
                 inferred[symbol] = True
                 for clause in knowledgeBase:
                     if clause.operator == "=>" and symbol in str(clause.left):
-                        count[clause] -= 1
+                        count[clause] -= str(clause.left).count(symbol)
                         if count[clause] == 0:
                             self.foundSymbols.append(clause.right.right.symbol)
                             if (clause.right == query):
@@ -31,7 +32,7 @@ if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("UnitTest/testcases/horns/horn22.txt")
+    env.readFile("UnitTest/testcases/horns/horn0.txt")
 
     tt = ForwardChaining()
     print(tt.forwardChainingEntails(env.knowledgeBase, env.symbols, env.query))

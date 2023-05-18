@@ -7,34 +7,69 @@ class TestGenerator:
         self.symbols = []
         self.clauses = []
 
+    # def generateHornCase(self, filename):
+    #
+    #     self.clauses = []
+    #     self.symbols = []
+    #     self.symbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
+    #     for i in range(50):
+    #         self.clauses = []
+    #         for j in range(1, 10):
+    #             clause = ""
+    #             if (random.randint(0, 1) == 0):
+    #
+    #                 clause += random.choice(self.symbols)
+    #                 clause += "&"
+    #                 clause += random.choice(self.symbols)
+    #                 clause += " => "
+    #                 clause += random.choice(self.symbols)
+    #             else:
+    #                 clause += random.choice(self.symbols)
+    #             self.clauses.append(clause)
+    #
+    #         with open(filename+"horn"+str(i)+".txt", "w") as file:
+    #             file.write("TELL\n")
+    #             for clause in self.clauses:
+    #                 file.write(clause)
+    #                 file.write("; ")
+    #             file.write("\n")
+    #             file.write("ASK\n")
+    #             file.write(random.choice(self.symbols))
+
     def generateHornCase(self, filename):
-
-        self.clauses = []
-        self.symbols = []
-        self.symbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
         for i in range(50):
-            self.clauses = []
-            for j in range(1, 10):
-                clause = ""
-                if (random.randint(0, 1) == 0):
-
-                    clause += random.choice(self.symbols)
-                    clause += "&"
-                    clause += random.choice(self.symbols)
-                    clause += " => "
-                    clause += random.choice(self.symbols)
-                else:
-                    clause += random.choice(self.symbols)
-                self.clauses.append(clause)
-
+            self.symbols = list(string.ascii_letters[:5])
+            clauses = []
+            for j in range(7):
+                hornClause = list(set(random.choices(self.symbols,k=random.randint(1,5))))
+                tail = hornClause[:-1]
+                if len(hornClause) >= 2:
+                    head = hornClause[-1]
+                    clauseString = "&".join(tail) + " =>" + head
+                    clauses.append(clauseString)
+            literal = list(set(random.choices(self.symbols,k=random.randint(1,3))))
+            clauses.extend(literal)
+            query = random.choice(self.symbols)
+            while query in literal:
+                query = random.choice(self.symbols)
             with open(filename+"horn"+str(i)+".txt", "w") as file:
                 file.write("TELL\n")
-                for clause in self.clauses:
+                for clause in clauses:
                     file.write(clause)
                     file.write("; ")
                 file.write("\n")
                 file.write("ASK\n")
-                file.write(random.choice(self.symbols))
+                file.write(query)
+
+
+
+
+
+
+
+
+
+
 
     def generateGeneralCase(self):
 

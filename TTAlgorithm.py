@@ -63,11 +63,11 @@ class TruthTableAlgorithm:
 
 if __name__ == "__main__":
     from environment import Environment
-
+    import sympy
     env = Environment()
-    env.readFile("file.txt")
+    env.readFile("UnitTest/testcases/horns/horn0.txt")
 
     tt = TruthTableAlgorithm()
     print(tt.checkAll(env.knowledgeBase,env.query,env.symbols,[]))
     print(tt.kbCount) # rowCount and kbCount must be reset to 0 when checkALl is called the second time with the same instance
-    print(tt.rowCount)
+    # print(tt.rowCount)
