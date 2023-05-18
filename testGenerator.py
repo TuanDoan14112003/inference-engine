@@ -38,16 +38,16 @@ class TestGenerator:
 
     def generateHornCase(self, filename):
         for i in range(50):
-            self.symbols = list(string.ascii_letters[:5])
+            self.symbols = list(string.ascii_letters[:10])
             clauses = []
             for j in range(7):
-                hornClause = list(set(random.choices(self.symbols,k=random.randint(1,5))))
+                hornClause = list(set(random.choices(self.symbols,k=random.randint(1,6))))
                 tail = hornClause[:-1]
                 if len(hornClause) >= 2:
                     head = hornClause[-1]
                     clauseString = "&".join(tail) + " =>" + head
                     clauses.append(clauseString)
-            literal = list(set(random.choices(self.symbols,k=random.randint(1,3))))
+            literal = list(set(random.choices(self.symbols,k=random.randint(1,5))))
             clauses.extend(literal)
             query = random.choice(self.symbols)
             while query in literal:

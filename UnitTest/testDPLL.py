@@ -9,10 +9,10 @@ from sympy.logic.inference import entails
 from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 
 class TestResolution(unittest.TestCase):
-    # @classmethod
-    # def setUpClass(cls):
-    #     testGenerator = TestGenerator()
-    #     testGenerator.generateHornCase("testcases/horns/")
+    @classmethod
+    def setUpClass(cls):
+        testGenerator = TestGenerator()
+        testGenerator.generateHornCase("testcases/horns/")
 
     def test(self):
         for i in range(50):
