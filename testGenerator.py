@@ -37,7 +37,6 @@ class TestGenerator:
 
     def generateGeneralCase(self,  filename, number, maxdepth=10):
         for j in range(number):
-            print(j)
             with open(filename+str(j)+".txt", "w") as file:
                 file.write("TELL\n")
             self.clauses = []
