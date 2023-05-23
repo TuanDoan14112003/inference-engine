@@ -1,7 +1,6 @@
 class ForwardChaining:
     def __init__(self):
         self.foundSymbols = []
-
     def forwardChainingEntails(self, knowledgeBase, symbols, query):
         knowledgeBase = list({clause for clause in knowledgeBase}) # remove duplicate clause
         self.foundSymbols = []
@@ -32,7 +31,7 @@ if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("UnitTest/testcases/horns/horn13.txt")
+    env.readFile("UnitTest/testcases/horns/horn28.txt")
 
     tt = ForwardChaining()
     print(tt.forwardChainingEntails(env.knowledgeBase, env.symbols, env.query))
