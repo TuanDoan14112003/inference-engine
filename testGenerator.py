@@ -1,6 +1,6 @@
 import random
 import string
-
+from os import listdir
 
 class TestGenerator:
     def __init__(self):
@@ -8,7 +8,8 @@ class TestGenerator:
         self.clauses = []
 
    
-    def generateHornCase(self, filename):
+    def generateHornCase(self, parent_folder):
+        current_number_of_test = len(listdir(parent_folder))
         for i in range(50):
             self.symbols = list(string.ascii_letters[:5])
             clauses = []
@@ -26,7 +27,7 @@ class TestGenerator:
             query = random.choice(self.symbols)
             while query in literal:
                 query = random.choice(self.symbols)
-            with open(filename+"horn"+str(i)+".txt", "w") as file:
+            with open(parent_folder+"horn" + str(current_number_of_test + i)+".txt", "w") as file:
                 file.write("TELL\n")
                 for clause in clauses:
                     file.write(clause)
@@ -35,10 +36,11 @@ class TestGenerator:
                 file.write("ASK\n")
                 file.write(query)
 
-    def generateGeneralCase(self,  filename, number, maxdepth=10):
+    def generateGeneralCase(self,  parent_folder, number, maxdepth=10):
+        current_number_of_test = len(listdir(parent_folder))
         for j in range(number):
-            print(j)
-            with open(filename+str(j)+".txt", "w") as file:
+
+            with open(parent_folder+"general" + str(current_number_of_test + j)+".txt", "w") as file:
                 file.write("TELL\n")
             self.clauses = []
             self.symbols = {symbol: 1 for symbol in list(
@@ -72,10 +74,10 @@ class TestGenerator:
                 clause += ")"
                 self.symbols.update({clause: depth})
 
-                with open(filename+str(j)+".txt", "a") as file:
+                with open(parent_folder+"general" + str(current_number_of_test + j)+".txt", "a") as file:
                     file.write(clause)
                     file.write(";")
-            with open(filename+str(j)+".txt", "a") as file:
+            with open(parent_folder+"general" + str(current_number_of_test + j)+".txt", "a") as file:
                 file.write("\n")
                 file.write("ASK\n")
                 file.write(symbol)
@@ -125,5 +127,6 @@ if __name__ == "__main__":
     # test1.generateHornCase()
     import sys
     test2 = TestGenerator()
-    test2.generateGeneralCase(
-        "UnitTest/testcases/resolution/resolution", 50, 3)
+    # test2.generateGeneralCase(
+    #     "UnitTest/testcases/resolution/resolution", 50, 3)
+    test2.generateGeneralCase("UnitTest/testcases/general/",50,3)

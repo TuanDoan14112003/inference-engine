@@ -11,15 +11,12 @@ from sympy.logic.inference import entails
 from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 
 class TestFCBC(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        testGenerator = TestGenerator()
-        testGenerator.generateHornCase("UnitTest/testcases/horns/")
+
     def test_1(self):
     
         for i in range(50):
             env = Environment()
-            env.readFile("./UnitTest/testcases/horns/horn"+str(i)+".txt")
+            env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
             forwardChaining = ForwardChaining()
             backwardChaining = BCAlgorithm()
             FCresult = forwardChaining.forwardChainingEntails(
@@ -36,7 +33,7 @@ class TestFCBC(unittest.TestCase):
         for i in range(50):
             print("Test2:",i)
             env = Environment()
-            env.readFile("./UnitTest/testcases/horns/horn"+str(i)+".txt")
+            env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
             forwardChaining = ForwardChaining()
             kb = []
             query = sympy_parser(str(env.query).replace("=>", ">>").replace("||","|"))
@@ -51,7 +48,7 @@ class TestFCBC(unittest.TestCase):
         for i in range( 50):
             print("Test3:",i)
             env = Environment()
-            env.readFile("./UnitTest/testcases/horns/horn"+str(i)+".txt")
+            env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
             BCC = BCAlgorithm()
             kb = []
             query = sympy_parser(str(env.query).replace(
