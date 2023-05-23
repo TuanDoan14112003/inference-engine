@@ -9,8 +9,6 @@ from sympy.logic.inference import entails
 from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 
 class TestResolution(unittest.TestCase):
-
-
     def testResolutionWithHornCases(self):
         parent_folder = "UnitTest/testcases/horns/"
         number_of_files = len([file for file in os.listdir(parent_folder) if "test" in file])

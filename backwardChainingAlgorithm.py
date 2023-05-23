@@ -69,8 +69,8 @@ class BCAlgorithm:
     #     return inferred[query.right.symbol]
 
     def backwardChainingEntails(self, knowledgeBase, symbols, query):
-      
-    
+
+
         # Check if the query is a Clause
         if (isinstance(query, Clause)):
             query = query.right

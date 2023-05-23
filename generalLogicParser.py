@@ -119,74 +119,123 @@ def isLiteral(clause):
 
 
 
+# def convertToCNF(clause):
+#     # print(clause)
+#
+#     if isCNF(clause):
+#         return clause
+#     # if clause.left == clause.right and clause.operator == "||":
+#     #     return convertToCNF(clause.left)
+#     if clause.operator is None and clause.left is None and isinstance(clause.right,PropositionalSymbol):
+#         return Clause(right=PropositionalSymbol(symbol=clause.right.symbol))
+#     elif clause.operator == "~" and isinstance(clause.right.right,PropositionalSymbol):
+#         return Clause(operator="~",right=Clause(right=PropositionalSymbol(clause.right.right.symbol)))
+#
+#
+#
+#     # eliminate implication
+#     if clause.operator == "=>":
+#         newLeft = convertToCNF(Clause(right=convertToCNF(clause.left), operator="~"))
+#         newRight = convertToCNF(clause.right)
+#         return convertToCNF(Clause(left=newLeft, right=newRight, operator="||"))
+#     elif clause.operator == "<=>":
+#         newLeft = convertToCNF(Clause(operator="||",
+#                          left=Clause(
+#                              operator="~",
+#                              right=convertToCNF(clause.left)
+#                          ),
+#                          right=convertToCNF(clause.right)
+#                          ))
+#
+#         newRight = convertToCNF(Clause(operator="||",
+#                           left=convertToCNF(clause.left),
+#                           right=Clause(
+#                               operator="~",
+#                               right=convertToCNF(clause.right))))
+#
+#         return convertToCNF(Clause(left=newLeft, right=newRight, operator="&"))
+#
+#     #de morgan
+#     elif clause.operator == "~":
+#         if clause.right.operator == "~":
+#             return convertToCNF(clause.right.right)
+#         elif clause.right.operator == "&":
+#             newLeft = convertToCNF(Clause( operator="~",right=convertToCNF(clause.right.left)))
+#             newRight = convertToCNF(Clause( operator="~",right=convertToCNF(clause.right.right)))
+#             return convertToCNF(Clause(left=newLeft, right=newRight, operator="||"))
+#         elif clause.right.operator == "||":
+#             newLeft = convertToCNF(Clause( operator="~",right=convertToCNF(clause.right.left)))
+#             newRight = convertToCNF(Clause(operator="~", right=convertToCNF(clause.right.right)))
+#             return convertToCNF(Clause(left=newLeft, right=newRight, operator="&"))
+#
+#     #distributive ( a || (b&c))
+#     elif clause.operator == "||" and clause.right.operator == "&":
+#         newLeft = convertToCNF(Clause(operator = "||", left= convertToCNF(clause.left),right = convertToCNF(clause.right.left)))
+#         newRight = convertToCNF(Clause(operator = "||",left = convertToCNF(clause.left),right = convertToCNF(clause.right.right)))
+#         return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
+#
+#     #distributive ( (b&c) || a)
+#     elif clause.operator == "||" and clause.left.operator == "&":
+#         newLeft = convertToCNF(Clause(operator = "||", left= convertToCNF(clause.right),right = convertToCNF(clause.left.left)))
+#         newRight = convertToCNF(Clause(operator = "||",left = convertToCNF(clause.right),right = convertToCNF(clause.left.right)))
+#         return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
+#
+#     final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
+#     # print(final)
+#     # if isCNF(final):
+#     #     return final
+#     # else:
+#     return convertToCNF(final)
+#     # return final
 def convertToCNF(clause):
-    # print(clause)
-
-    if isCNF(clause):
-        return clause
-    # if clause.left == clause.right and clause.operator == "||":
-    #     return convertToCNF(clause.left)
-    if clause.operator is None and clause.left is None and isinstance(clause.right,PropositionalSymbol):
+    if clause.operator is None and clause.left is None and isinstance(clause.right, PropositionalSymbol):
         return Clause(right=PropositionalSymbol(symbol=clause.right.symbol))
-    elif clause.operator == "~" and isinstance(clause.right.right,PropositionalSymbol):
-        return Clause(operator="~",right=Clause(right=PropositionalSymbol(clause.right.right.symbol)))
-
-
+    elif clause.operator == "~" and isinstance(clause.right.right, PropositionalSymbol):
+        return Clause(operator="~", right=Clause(right=PropositionalSymbol(clause.right.right.symbol)))
 
     # eliminate implication
     if clause.operator == "=>":
-        newLeft = convertToCNF(Clause(right=convertToCNF(clause.left), operator="~"))
-        newRight = convertToCNF(clause.right)
-        return convertToCNF(Clause(left=newLeft, right=newRight, operator="||"))
+        return convertToCNF(Clause(left=Clause(right=clause.left, operator="~"), right=clause.right, operator="||"))
     elif clause.operator == "<=>":
-        newLeft = convertToCNF(Clause(operator="||",
-                         left=Clause(
-                             operator="~",
-                             right=convertToCNF(clause.left)
-                         ),
-                         right=convertToCNF(clause.right)
-                         ))
+        return convertToCNF(Clause(left=Clause(operator="||",
+                                               left=Clause(
+                                                   operator="~",
+                                                   right=clause.left
+                                               ),
+                                               right=clause.right
+                                               ), right=Clause(operator="||",
+                                                               left=clause.left,
+                                                               right=Clause(
+                                                                   operator="~",
+                                                                   right=clause.right)), operator="&"))
 
-        newRight = convertToCNF(Clause(operator="||",
-                          left=convertToCNF(clause.left),
-                          right=Clause(
-                              operator="~",
-                              right=convertToCNF(clause.right))))
-
-        return convertToCNF(Clause(left=newLeft, right=newRight, operator="&"))
-
-    #de morgan
+    # de morgan
     elif clause.operator == "~":
         if clause.right.operator == "~":
             return convertToCNF(clause.right.right)
         elif clause.right.operator == "&":
-            newLeft = convertToCNF(Clause( operator="~",right=convertToCNF(clause.right.left)))
-            newRight = convertToCNF(Clause( operator="~",right=convertToCNF(clause.right.right)))
-            return convertToCNF(Clause(left=newLeft, right=newRight, operator="||"))
+            return convertToCNF(Clause(left=Clause(operator="~", right=clause.right.left), right=Clause(operator="~", right=clause.right.right), operator="||"))
         elif clause.right.operator == "||":
-            newLeft = convertToCNF(Clause( operator="~",right=convertToCNF(clause.right.left)))
-            newRight = convertToCNF(Clause(operator="~", right=convertToCNF(clause.right.right)))
-            return convertToCNF(Clause(left=newLeft, right=newRight, operator="&"))
+            return convertToCNF(Clause(left=Clause(operator="~", right=clause.right.left), right=Clause(operator="~", right=clause.right.right), operator="&"))
 
-    #distributive ( a || (b&c))
+    # distributive ( a || (b&c))
     elif clause.operator == "||" and clause.right.operator == "&":
-        newLeft = convertToCNF(Clause(operator = "||", left= convertToCNF(clause.left),right = convertToCNF(clause.right.left)))
-        newRight = convertToCNF(Clause(operator = "||",left = convertToCNF(clause.left),right = convertToCNF(clause.right.right)))
-        return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
+        return convertToCNF(Clause(left=Clause(operator="||", left=clause.left, right=clause.right.left), right=Clause(operator="||", left=clause.left, right=clause.right.right), operator="&"))
 
-    #distributive ( (b&c) || a)
+    # distributive ( (b&c) || a)
     elif clause.operator == "||" and clause.left.operator == "&":
-        newLeft = convertToCNF(Clause(operator = "||", left= convertToCNF(clause.right),right = convertToCNF(clause.left.left)))
-        newRight = convertToCNF(Clause(operator = "||",left = convertToCNF(clause.right),right = convertToCNF(clause.left.right)))
-        return convertToCNF(Clause(left=newLeft,right=newRight,operator="&"))
+        return convertToCNF(Clause(left=Clause(operator="||", left=clause.right, right=clause.left.left), right=Clause(operator="||", left=clause.right, right=clause.left.right), operator="&"))
 
-    final = Clause(right=convertToCNF(clause.right),left=convertToCNF(clause.left) if clause.left is not None else None,operator=clause.operator)
-    # print(final)
-    # if isCNF(final):
-    #     return final
-    # else:
-    return convertToCNF(final)
+    final = Clause(right=convertToCNF(clause.right), left=convertToCNF(
+        clause.left) if clause.left is not None else None, operator=clause.operator)
+    print(final)
+
+    if isCNF(final):
+        return final
+    else:
+        return convertToCNF(final)
     # return final
+
 
 
 if __name__ == "__main__":
