@@ -13,10 +13,10 @@ from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 
 class TestCNF(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        testGenerator = TestGenerator()
-        testGenerator.generateGeneralLogic("UnitTest/testcases/generalClause.txt", 100,5)
+    # @classmethod
+    # def setUpClass(cls):
+    #     testGenerator = TestGenerator()
+    #     testGenerator.generateGeneralLogic("UnitTest/testcases/generalClause.txt", 100,5)
 
     # def testGeneralLogicParser(self):
     #     with open("testcases/generalClause.txt", "r") as file:

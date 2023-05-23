@@ -60,7 +60,7 @@ if (__name__ == "__main__"):
     from generalLogicParser import parseClause
     # from environment import Environment
     # env = Environment()
-    # env.readFile("UnitTest/testcases/horns/horn-3.txt")
+    # env.readFile("UnitTest/testcases/horns/horn53.txt")
     # resolution = Resolution()
     # print(resolution.solve(env.knowledgeBase,env.query))
 

@@ -17,11 +17,6 @@ class DPLLAlgorithm:
 
         clauses = [clause.split("||") for clause in clauses]
         clauses = {frozenset(clause) for clause in clauses}
-        print(clauses)
-        # if not self.dpll(clauses):
-        #     return True
-        # else:
-        #     return False
         return not self.dpll(clauses)
     def dpll(self,formula):
         if formula == set():
@@ -64,7 +59,7 @@ if __name__ == "__main__":
     from generalLogicParser import parseClause
     from environment import Environment
     # env = Environment()
-    # env.readFile("UnitTest/testcases/horns/horn-3.txt")
+    # env.readFile("UnitTest/testcases/horns/horn53.txt")
     # dpll = DPLLAlgorithm()
     # print(dpll.solve(env.knowledgeBase,env.query))
     # print()
