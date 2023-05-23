@@ -12,13 +12,14 @@ class TestResolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         testGenerator = TestGenerator()
-        testGenerator.generateHornCase("testcases/horns/")
+        testGenerator.generateGeneralCase("testcases/resolution/resolution",50,3)
 
     def test(self):
+        trueCount = 0
         for i in range(50):
             print(i)
             env = Environment()
-            env.readFile("testcases/horns/horn" + str(i) + ".txt")
+            env.readFile("testcases/resolution/resolution" + str(i) + ".txt")
             dpll = DPLLAlgorithm()
             kb = []
             query = sympy_parser(str(env.query).replace("=>", ">>").replace("||", "|"))
@@ -26,7 +27,11 @@ class TestResolution(unittest.TestCase):
             for clause in env.knowledgeBase:
                 kb.append(sympy_parser(str(clause).replace(
                     "=>", ">>").replace("||", "|")))
-            print(entails(query, kb))
+            rs = entails(query, kb)
+            if rs:
+                trueCount += 1
+            print(rs)
 
             self.assertEqual(dpll.solve(env.knowledgeBase, env.query),
                              entails(query, kb))
+        print((trueCount/50)*100,"%")

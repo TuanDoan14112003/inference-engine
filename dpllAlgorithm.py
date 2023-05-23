@@ -17,7 +17,6 @@ class DPLLAlgorithm:
 
         clauses = [clause.split("||") for clause in clauses]
         clauses = {frozenset(clause) for clause in clauses}
-        print(clauses)
         # if not self.dpll(clauses):
         #     return True
         # else:

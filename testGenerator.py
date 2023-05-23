@@ -37,13 +37,14 @@ class TestGenerator:
 
     def generateGeneralCase(self,  filename, number, maxdepth=10):
         for j in range(number):
+            print(j)
             with open(filename+str(j)+".txt", "w") as file:
                 file.write("TELL\n")
             self.clauses = []
             self.symbols = {symbol: 1 for symbol in list(
                 string.ascii_lowercase[:7])}
             symbol = random.choice(list(self.symbols.keys()))
-            for i in range(0, 10):
+            for i in range(0, 6):
                 clause = "("
                 firstSymbol = random.choice(list(self.symbols.keys()))
                 secondSymbol = random.choice(list(self.symbols.keys()))
@@ -125,4 +126,4 @@ if __name__ == "__main__":
     import sys
     test2 = TestGenerator()
     test2.generateGeneralCase(
-        "UnitTest/testcases/resolution/resolution", 50, 10)
+        "UnitTest/testcases/resolution/resolution", 50, 3)

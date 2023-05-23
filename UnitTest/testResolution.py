@@ -12,13 +12,13 @@ class TestResolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         testGenerator = TestGenerator()
-        testGenerator.generateHornCase("testcases/horns/")
+        testGenerator.generateGeneralCase("testcases/resolution/resolution",50,3)
 
     def test(self):
         for i in range(50):
             print(i)
             env = Environment()
-            env.readFile("testcases/horns/horn" + str(i) + ".txt")
+            env.readFile("testcases/resolution/resolution" + str(i) + ".txt")
             resolution = Resolution()
             kb = []
             query = sympy_parser(str(env.query).replace("=>", ">>").replace("||", "|"))
