@@ -15,68 +15,62 @@ class BCAlgorithm:
     #     self.frontier = [query]
     #     self.foundSymbols = [clause.right.symbol for clause in knowledgeBase if
     #                          clause.operator is None and clause.left is None]
-    #     self.visited = []
+        
+
     #     while self.frontier:
-    #         current = self.frontier.pop()
-    #         if current.operator is None and current.left is None:
-    #             if current.right.symbol not in self.visited:
-    #                 self.visited.append(current.right.symbol)
-    #                 for clause in knowledgeBase:
+    #         current = self.frontier.pop(0)
+            
+    #         if (isinstance(current, Clause)):
+    #             current = current.right
+    #         print("Current: ", current.symbol)
+    #         if current.symbol not in self.visited:
+    #             for clause in knowledgeBase:
+    #                 if isinstance(clause.right, Clause):
+    #                     rightclause = clause.right
+    #                 if rightclause.right.symbol == current.symbol:
     #                     if clause.operator is None and clause.left is None:
-    #                             if (clause.right == current.right):
-    #                                 inferred[current.right.symbol] = True
-    #                # for clause in knowledgeBase:
-    #                     if clause.operator == "=>":
-    #                             if (clause.right == current):
-    #                                 self.frontier.append(clause.left)
-    #                                 self.previous.append({"left": clause.left, "right": current, "operator": "=>"})
-    #         else:
-    #             if (isinstance(current.left.right,PropositionalSymbol)):
-    #                 if (current.left.right.symbol in self.foundSymbols) and (current.right.right.symbol in self.foundSymbols):
-    #                     inferred[current.right.right.symbol] = True
-    #                     inferred[current.left.right.symbol] = True
-    #                 else:
-    #                     if current.left.right.symbol not in self.visited:
-    #                         self.frontier.append(current.left)
-    #                     if current.right.right.symbol not in self.visited:
-    #                         self.frontier.append(current.right)
-    #             else:
-    #                 if (current.right.right.symbol in self.foundSymbols):
-    #                     inferred[current.right.right.symbol] = True
-    #                 else:
-    #                     self.frontier.append(current.right)
+    #                         inferred[clause.right.symbol] = True
+    #                     elif clause.operator == "=>":
+    #                         if clause.left.right.symbol in self.foundSymbols and (clause.left.left is None or clause.left.getNumberOfOperands() == 1  or clause.left.left.symbol in self.foundSymbols):
+    #                             if (isinstance(clause.right, Clause)):
+    #                                 self.foundSymbols.append(clause.right.right.symbol)
+    #                                 inferred[clause.right.right.symbol] = True
+    #                             else:
+    #                                 self.foundSymbols.append(clause.right.symbol)
+    #                                 inferred[clause.right.symbol] = True
+    #                             self.previous.append({"conclusion": clause.right, "premises": [clause.left.right]})
+    #                             if clause.left.left is not None:
+    #                                 self.previous[-1]["premises"].append(clause.left.left)
+    #                         else:
+    #                             self.frontier.append(clause.left.right)
+    #                             while clause.left.left is not None:
+    #                                 clause = clause.left
+    #                                 self.frontier.append(clause.right)
+                                
+                         
+    #     self.previous.reverse()
+    #     for clause in self.previous:
+    #         print("Conclusion: ", clause["conclusion"])
+    #         results = []
+    #         for premise in clause["premises"]:
+    #             print("Premise: ", premise)
+    #             results.append(inferred[premise.symbol])
+    #         if all(results):
+    #             inferred[clause["conclusion"].right.symbol] = True
 
-    #                 self.frontier.append(current.left)
-
-    #     for i in self.previous.__reversed__():
-    #         if i["left"].operator == None:
-    #             if (inferred[i["left"].right.symbol] == True):
-    #                 inferred[i["right"].right.symbol] = True
-    #         else:
-    #             if (isinstance(i["left"].left.right, PropositionalSymbol)):
-    #                 if (inferred[i["left"].right.right.symbol] == True) and (inferred[i["left"].left.right.symbol] == True):
-    #                     inferred[i["right"].right.symbol] = True
-    #             else:
-    #                 list = []
-    #                 current = i["left"].left
-    #                 while (current != None):
-    #                     list.append(i["left"].right.right.symbol)
-    #                     current = current.left
-    #                 for j in list:
-    #                     if inferred[j] == False:
-    #                         inferred[i["right"].right.symbol] = False
-    #                 inferred[i["right"].right.symbol] = True
+                
     #     return inferred[query.right.symbol]
 
+            
     def backwardChainingEntails(self, knowledgeBase, symbols, query):
-      
-    
+
         # Check if the query is a Clause
         if (isinstance(query, Clause)):
             query = query.right
         if query.symbol in self.visited:
             return False
         self.visited.append(query.symbol)
+        print("Query: ", query.symbol)
     # Iterate through each rule in the knowledge base
         for rule in knowledgeBase:
             # Check if the conclusion of the rule matches the goal
@@ -112,7 +106,8 @@ if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("UnitTest/testcases/horns/horn13.txt")
+    env.readFile("UnitTest/testcases/horns/horn28.txt")
 
     tt = BCAlgorithm()
     print(tt.backwardChainingEntails(env.knowledgeBase, env.symbols, env.query))
+
