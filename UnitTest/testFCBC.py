@@ -36,6 +36,7 @@ class TestFCBC(unittest.TestCase):
             env.readFile("UnitTest/testcases/horns/horn"+str(i)+".txt")
             forwardChaining = ForwardChaining()
             kb = []
+            
             query = sympy_parser(str(env.query).replace("=>", ">>").replace("||","|"))
 
     #         for clause in env.knowledgeBase:

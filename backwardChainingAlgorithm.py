@@ -7,6 +7,7 @@ class BCAlgorithm:
         self.frontier = []
         self.visited = []
         self.previous = []
+        self.foundSymbols = []
 
     # def backwardChainingEntails(self, knowledgeBase,symbols, query):
     #     if query.right.symbol not in symbols:
@@ -63,6 +64,9 @@ class BCAlgorithm:
 
             
     def backwardChainingEntails(self, knowledgeBase, symbols, query):
+        if self.foundSymbols == []:
+            self.foundSymbols = [clause.right.symbol for clause in knowledgeBase if
+                                 clause.operator is None and clause.left is None]
 
         # Check if the query is a Clause
         if (isinstance(query, Clause)):
@@ -71,15 +75,22 @@ class BCAlgorithm:
             return False
         self.visited.append(query.symbol)
         print("Query: ", query.symbol)
+        if query.symbol not in symbols:
+            return False
+        # Check if the query is a fact
+        if query.symbol in self.foundSymbols:
+            self.visited.remove(query.symbol)
+            return True
     # Iterate through each rule in the knowledge base
         for rule in knowledgeBase:
             # Check if the conclusion of the rule matches the goal
-            if (isinstance(rule.right, PropositionalSymbol)):
-                if rule.right == query:
-                    # Recursively evaluate the premises of the rule
-                    self.visited.remove(query.symbol)
-                    return True
-            else:
+            if (not isinstance(rule.right, PropositionalSymbol)):
+                # if rule.right in self.foundSymbols and rule not in self.visited:
+                #     # Recursively evaluate the premises of the rule
+                #     self.foundSymbols.append(rule.right.symbol)
+                #     self.visited.remove(query.symbol)
+                #     return True
+            # else:
                 if rule.right.right == query and rule not in self.visited:
                     # Recursively evaluate the premises of the rule
                     premises = rule.left
@@ -100,13 +111,18 @@ class BCAlgorithm:
         # If no rule matches the goal, return False
 
         return False
+    
+    def FOL_backWardChainingEntails(self, knowledgeBase, symbols, query, subs):
+        answer = []
+        if query is None:
+            return subs
 
 
 if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("UnitTest/testcases/horns/horn28.txt")
+    env.readFile("file.txt")
 
     tt = BCAlgorithm()
     print(tt.backwardChainingEntails(env.knowledgeBase, env.symbols, env.query))
