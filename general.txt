@@ -1,4 +1,0 @@
-TELL
-l; x; e||b<=>c; r||n<=>s; t=>f&n; j&u=>v; g=>w&f; u||g<=>g; g<=>t=>c; 
-ASK
-w

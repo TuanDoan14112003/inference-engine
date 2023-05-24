@@ -74,7 +74,6 @@ class BCAlgorithm:
         if query.symbol in self.visited:
             return False
         self.visited.append(query.symbol)
-        print("Query: ", query.symbol)
         if query.symbol not in symbols:
             return False
         # Check if the query is a fact
@@ -85,12 +84,6 @@ class BCAlgorithm:
         for rule in knowledgeBase:
             # Check if the conclusion of the rule matches the goal
             if (not isinstance(rule.right, PropositionalSymbol)):
-                # if rule.right in self.foundSymbols and rule not in self.visited:
-                #     # Recursively evaluate the premises of the rule
-                #     self.foundSymbols.append(rule.right.symbol)
-                #     self.visited.remove(query.symbol)
-                #     return True
-            # else:
                 if rule.right.right == query and rule not in self.visited:
                     # Recursively evaluate the premises of the rule
                     premises = rule.left
@@ -111,18 +104,14 @@ class BCAlgorithm:
         # If no rule matches the goal, return False
 
         return False
-    
-    def FOL_backWardChainingEntails(self, knowledgeBase, symbols, query, subs):
-        answer = []
-        if query is None:
-            return subs
+
 
 
 if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("file.txt")
+    env.readFile("horn.txt")
 
     tt = BCAlgorithm()
     print(tt.backwardChainingEntails(env.knowledgeBase, env.symbols, env.query))
