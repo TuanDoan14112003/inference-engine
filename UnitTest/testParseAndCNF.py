@@ -12,28 +12,29 @@ from sympy.parsing.sympy_parser import parse_expr as sympy_parser
 #generate a simple unit test
 
 class TestCNF(unittest.TestCase):
-
-    # @classmethod
-    # def setUpClass(cls):
-    #     testGenerator = TestGenerator()
-    #     testGenerator.generateGeneralLogic("UnitTest/testcases/generalClause.txt", 100,5)
-
-    # def testGeneralLogicParser(self):
-    #     with open("testcases/generalClause.txt", "r") as file:
-    #         line = file.readline().strip()
-    #         while line:
-    #             exp1 = sympy_parser(line.replace("=>", ">>").replace("||","|"))
-    #             exp2 = sympy_parser(str(parser.parseClause(line)).replace("=>", ">>").replace("||", "|"))
-    #             print(parser.parseClause(line))
-    #             print("vs")
-    #             print(exp2)
-    #             print("*"*20)
-    #             self.assertTrue(exp1.equals(exp2))
-    #             line = file.readline().strip()
+    number_of_files = len(os.listdir("UnitTest/testcases/cnf/"))
+    filename = "UnitTest/testcases/cnf/" + "cnf" + str(number_of_files) + ".txt"
+    @classmethod
+    def setUpClass(cls):
+        testGenerator = TestGenerator()
+        testGenerator.generateGeneralLogic(cls.filename, 100,5)
+        print(cls.filename)
+    def testGeneralLogicParser(self):
+        with open(self.__class__.filename, "r") as file:
+            line = file.readline().strip()
+            while line:
+                exp1 = sympy_parser(line.replace("=>", ">>").replace("||","|"))
+                exp2 = sympy_parser(str(parser.parseClause(line)).replace("=>", ">>").replace("||", "|"))
+                print(parser.parseClause(line))
+                print("vs")
+                print(exp2)
+                print("*"*20)
+                self.assertTrue(exp1.equals(exp2))
+                line = file.readline().strip()
                 
     def testCNF(self):
 
-        with open("UnitTest/testcases/generalClause.txt", "r") as file:
+        with open(self.__class__.filename, "r") as file:
             line = file.readline().strip()
             count = 1
             while line:
