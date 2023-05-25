@@ -4,105 +4,73 @@ from clause import Clause
 
 class BCAlgorithm:
     def __init__(self):
-        self.frontier = []
-        self.visited = []
-        self.previous = []
         self.foundSymbols = []
+        self.output = "NO"
+        self.outputSymbols = []
+        self.inferred = {}
 
-    # def backwardChainingEntails(self, knowledgeBase,symbols, query):
-    #     if query.right.symbol not in symbols:
-    #         return False
-    #     inferred = {symbol: False for symbol in symbols}
-    #     self.frontier = [query]
-    #     self.foundSymbols = [clause.right.symbol for clause in knowledgeBase if
-    #                          clause.operator is None and clause.left is None]
-        
 
-    #     while self.frontier:
-    #         current = self.frontier.pop(0)
-            
-    #         if (isinstance(current, Clause)):
-    #             current = current.right
-    #         print("Current: ", current.symbol)
-    #         if current.symbol not in self.visited:
-    #             for clause in knowledgeBase:
-    #                 if isinstance(clause.right, Clause):
-    #                     rightclause = clause.right
-    #                 if rightclause.right.symbol == current.symbol:
-    #                     if clause.operator is None and clause.left is None:
-    #                         inferred[clause.right.symbol] = True
-    #                     elif clause.operator == "=>":
-    #                         if clause.left.right.symbol in self.foundSymbols and (clause.left.left is None or clause.left.getNumberOfOperands() == 1  or clause.left.left.symbol in self.foundSymbols):
-    #                             if (isinstance(clause.right, Clause)):
-    #                                 self.foundSymbols.append(clause.right.right.symbol)
-    #                                 inferred[clause.right.right.symbol] = True
-    #                             else:
-    #                                 self.foundSymbols.append(clause.right.symbol)
-    #                                 inferred[clause.right.symbol] = True
-    #                             self.previous.append({"conclusion": clause.right, "premises": [clause.left.right]})
-    #                             if clause.left.left is not None:
-    #                                 self.previous[-1]["premises"].append(clause.left.left)
-    #                         else:
-    #                             self.frontier.append(clause.left.right)
-    #                             while clause.left.left is not None:
-    #                                 clause = clause.left
-    #                                 self.frontier.append(clause.right)
-                                
-                         
-    #     self.previous.reverse()
-    #     for clause in self.previous:
-    #         print("Conclusion: ", clause["conclusion"])
-    #         results = []
-    #         for premise in clause["premises"]:
-    #             print("Premise: ", premise)
-    #             results.append(inferred[premise.symbol])
-    #         if all(results):
-    #             inferred[clause["conclusion"].right.symbol] = True
+    def backwardChainingEntails(self, kb, symbols, query):
+        self.inferred = {symbol: False for symbol in symbols}
+        self.foundSymbols = [clause.right.symbol for clause in kb if
+                             clause.operator is None and clause.left is None]
 
-                
-    #     return inferred[query.right.symbol]
+        if self.infer(kb, query, []):
+            self.output = "YES: "
+            return True
+        return False
 
-            
-    def backwardChainingEntails(self, knowledgeBase, symbols, query):
-        if self.foundSymbols == []:
-            self.foundSymbols = [clause.right.symbol for clause in knowledgeBase if
-                                 clause.operator is None and clause.left is None]
 
-        # Check if the query is a Clause
+    def infer(self, kb, query, explored):
+       
         if (isinstance(query, Clause)):
             query = query.right
-        if query.symbol in self.visited:
-            return False
-        self.visited.append(query.symbol)
-        if query.symbol not in symbols:
-            return False
-        # Check if the query is a fact
-        if query.symbol in self.foundSymbols:
-            self.visited.remove(query.symbol)
-            return True
-    # Iterate through each rule in the knowledge base
-        for rule in knowledgeBase:
-            # Check if the conclusion of the rule matches the goal
-            if (not isinstance(rule.right, PropositionalSymbol)):
-                if rule.right.right == query and rule not in self.visited:
-                    # Recursively evaluate the premises of the rule
-                    premises = rule.left
-                    result = []
-                    result.append(self.backwardChainingEntails(
-                        knowledgeBase, symbols, premises.right))
 
-                    # If the rule has more than one premise, evaluate the rest of the premises
+        if query.symbol in self.foundSymbols:
+            if query.symbol not in self.foundSymbols:
+                self.foundSymbols.append(query.symbol)
+            return True
+        
+        for clause in kb:
+            if (not isinstance(clause.right, PropositionalSymbol)):
+                # Check if the right hand side of the sentence contain the symbol in the query
+                if clause.right.right == query:
+                    # Get all the symbols on the left hand side of the setence
+                    leftHandSymbols = []
+                    leftHandSymbols.append(clause.left.right)
+                    premises = clause.left
                     while premises.left is not None:
                         premises = premises.left
-                        result.append(self.backwardChainingEntails(
-                            knowledgeBase, symbols, premises.right))
-                    # If all premises are true, return True
-                    if all(result):
-                        self.visited.remove(query.symbol)
+                        leftHandSymbols.append(premises.right)
+                    # Check if the left hand side symbols of the sentence is true in KB
+                    trueSymbolCount = 0
+                    for premise in leftHandSymbols:
+                        
+                        if (isinstance(premise, Clause)):
+                            premise = premise.right
+                        print(premise.symbol)
+                        if premise == query:
+                            break
+
+                        if premise.symbol in explored:
+                            if self.inferred[premise.symbol] == False:
+                                break
+                        else:
+                            explored.append(premise.symbol)
+                        
+                        self.inferred[premise.symbol] = self.infer(
+                            kb, premise, explored.copy())
+
+                        if (self.inferred[premise.symbol] == False):
+                            break
+                        trueSymbolCount += 1
+               
+
+                    # Check if all the symbols in the left hand side is true
+                    if trueSymbolCount == len(leftHandSymbols):
+                        if query.symbol not in self.foundSymbols:
+                            self.foundSymbols.append(query.symbol)
                         return True
-
-        # If no rule matches the goal, return False
-
         return False
 
 
@@ -111,8 +79,7 @@ if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("horn.txt")
+    env.readFile("file.txt")
 
     tt = BCAlgorithm()
     print(tt.backwardChainingEntails(env.knowledgeBase, env.symbols, env.query))
-

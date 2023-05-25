@@ -65,7 +65,7 @@ if __name__ == "__main__":
     from environment import Environment
     import sympy
     env = Environment()
-    env.readFile("tt.txt")
+    env.readFile("file.txt")
     print(env.query)
     tt = TruthTableAlgorithm()
     print(tt.checkAll(env.knowledgeBase,env.query,env.symbols,[]))

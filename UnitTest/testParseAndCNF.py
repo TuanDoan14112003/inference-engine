@@ -19,6 +19,7 @@ class TestCNF(unittest.TestCase):
         testGenerator = TestGenerator()
         testGenerator.generateGeneralLogic(cls.filename, 100,5)
         print(cls.filename)
+        
     def testGeneralLogicParser(self):
         with open(self.__class__.filename, "r") as file:
             line = file.readline().strip()
