@@ -13,14 +13,14 @@ def testAllAlgorithm(kb_type):
     suite = unittest.TestSuite()
     testGenerator = TestGenerator()
     if kb_type == "horn":
-        testGenerator.generateHornCases("UnitTest/testcases/Horn/")
+        testGenerator.generateHornCase("UnitTest/testcases/Horn/")
         suite.addTest(TestDPLL("testDPLLWithHornCases"))
         suite.addTest(TestResolution("testResolutionWithHornCases"))
         suite.addTest(TestTruthTable("testTruthTableWithHornCases"))
         suite.addTest(TestFC("testFCWithHornCases"))
         suite.addTest(TestBC("testBCWithHornCases"))
     elif kb_type == "general":
-        testGenerator.generateGeneralCases("UnitTest/testcases/general/",50, 4)
+        testGenerator.generateGeneralCase("UnitTest/testcases/general/",50, 4)
         suite.addTest(TestDPLL("testDPLLWithGeneralCases"))
         suite.addTest(TestResolution("testResolutionWithGeneralCases"))
         suite.addTest(TestTruthTable("testTruthTableWithGeneralCases"))
