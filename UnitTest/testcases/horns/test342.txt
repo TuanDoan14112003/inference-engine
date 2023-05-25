@@ -1,4 +1,0 @@
-TELL
-c&a&d =>b; a =>e; d&b =>e; c&a&b =>e; a =>e; c; d; 
-ASK
-b
