@@ -230,7 +230,6 @@ def convertToCNF(clause):
 
     final = Clause(right=convertToCNF(clause.right), left=convertToCNF(
         clause.left) if clause.left is not None else None, operator=clause.operator)
-    print(final)
     if isCNF(final):
         return final
     else:

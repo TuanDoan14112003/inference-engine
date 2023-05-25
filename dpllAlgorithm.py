@@ -58,7 +58,7 @@ if __name__ == "__main__":
     from generalLogicParser import parseClause
     from environment import Environment
     env = Environment()
-    env.readFile("UnitTest/testcases/general/test101.txt")
+    env.readFile("file.txt")
     dpll = DPLLAlgorithm()
     print(dpll.solve(env.knowledgeBase,env.query))
     print()

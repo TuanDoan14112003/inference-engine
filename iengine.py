@@ -29,7 +29,7 @@ elif method == "BC":
     algorithm = BCAlgorithm()
     if algorithm.backwardChainingEntails(environment.knowledgeBase,environment.symbols,environment.query):
         print("YES: ", end ="")
-        # print(*(algorithm.foundSymbols),sep=", ")
+        print(*(algorithm.outputSymbols),sep=", ")
     else:
         print("NO")
 elif method == "RES":
