@@ -25,7 +25,7 @@ class BCAlgorithm:
             query = query.right
 
         if query.symbol in self.foundSymbols:
-            if query.symbol not in self.foundSymbols:
+            if query.symbol not in self.outputSymbols:
                 self.foundSymbols.append(query.symbol)
                 self.outputSymbols.append(query.symbol)
             return True
