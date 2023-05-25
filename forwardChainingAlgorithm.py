@@ -34,7 +34,7 @@ if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("file.txt")
+    env.readFile("UnitTest/testcases/horns/test1519.txt")
 
     tt = ForwardChaining()
     print(tt.forwardChainingEntails(env.knowledgeBase, env.symbols, env.query))

@@ -31,5 +31,6 @@ def testAllAlgorithm(kb_type):
     runner.run(suite)
 
 if __name__ == '__main__':
+
     testAllAlgorithm("general")
     testAllAlgorithm("horn")

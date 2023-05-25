@@ -29,7 +29,8 @@ class Environment:
                 self.knowledgeBase.append(generalLogicParser.parseClause(clause)) # parse the clause string
 
             symbols = [symbol.strip() for symbol in re.split("~|&|\|\||=>|<=>|\(|\)|;", knowledgeBase) if
-                       symbol.strip()] # using regex to get all the symbols in the knowledgebase
+                       symbol.strip()] + [symbol.strip() for symbol in re.split("~|&|\|\||=>|<=>|\(|\)|;", str(self.query)) if
+                       symbol.strip()] # using regex to get all the symbols in the knowledgebase and query
             self.symbols = list(set(symbols)) # remove duplicates
 
 
