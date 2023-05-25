@@ -47,7 +47,6 @@ class BCAlgorithm:
                         
                         if (isinstance(premise, Clause)):
                             premise = premise.right
-                        print(premise.symbol)
                         if premise == query:
                             break
 
@@ -69,7 +68,7 @@ class BCAlgorithm:
                     if trueSymbolCount == len(leftHandSymbols):
                         if query.symbol not in self.foundSymbols:
                             self.foundSymbols.append(query.symbol)
-                            self.outputSymbols.append(query)
+                            self.outputSymbols.append(query.symbol)
                         return True
         return False
 

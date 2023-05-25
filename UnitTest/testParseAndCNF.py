@@ -16,10 +16,12 @@ class TestCNF(unittest.TestCase):
     filename = "UnitTest/testcases/cnf/" + "cnf" + str(number_of_files) + ".txt"
     @classmethod
     def setUpClass(cls):
+        #generate a test file
         testGenerator = TestGenerator()
         testGenerator.generateGeneralLogic(cls.filename, 100,5)
         print(cls.filename)
         
+    #testing parser feature
     def testGeneralLogicParser(self):
         with open(self.__class__.filename, "r") as file:
             line = file.readline().strip()
@@ -33,22 +35,20 @@ class TestCNF(unittest.TestCase):
                 self.assertTrue(exp1.equals(exp2))
                 line = file.readline().strip()
                 
+    #testing CNF feature
     def testCNF(self):
-
         with open(self.__class__.filename, "r") as file:
+            #reading each line
             line = file.readline().strip()
             count = 1
             while line:
+                #compare the result of parser and sympy
                 exp1 = parser.convertToCNF(parser.parseClause(line))
                 exp2 = sympy.to_cnf(line.replace(
                     "=>", ">>").replace("||", "|"))
                 print(line)
-                # print(exp1)
-                # print("vs")
-                # print(exp2)
-                # print("*"*20)
-
-
+         
+                #check if the result is CNF using self-developed function
                 self.assertTrue(is_cnf(str(exp1).replace(
                     "=>", ">>").replace("||", "|")))
                 self.assertTrue(exp2.equals(sympy_parser(str(exp1).replace("=>", ">>").replace("||","|"))))

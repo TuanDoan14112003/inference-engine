@@ -14,6 +14,7 @@ class TestDPLL(unittest.TestCase):
         trueCount = 0
         parent_folder ="UnitTest/testcases/horns/"
         number_of_files = len([file for file in os.listdir(parent_folder) if "test" in file])
+        #reading files from folder
         for i in range(0,50):
             filename= parent_folder + "test"  + str(number_of_files - 1 - i) + ".txt"
             print(filename)
@@ -21,6 +22,7 @@ class TestDPLL(unittest.TestCase):
             env.readFile(filename)
             dpll = DPLLAlgorithm()
             kb = []
+            # convert query and clauses to sympy format
             query = sympy_parser(str(env.query).replace("=>", ">>").replace("||", "|"))
 
             for clause in env.knowledgeBase:
@@ -32,12 +34,13 @@ class TestDPLL(unittest.TestCase):
 
             self.assertEqual(dpll.solve(env.knowledgeBase, env.query),
                              entails(query, kb))
+            
     def testDPLLWithGeneralCases(self):
         print("*"*20 + "Testing DPLL With general cases" + "*"*20)
         trueCount = 0
         parent_folder ="UnitTest/testcases/general/"
         number_of_files = len([file for file in os.listdir(parent_folder) if "test" in file])
-
+        # reading files from folder
         for i in range(0,50):
             filename= parent_folder + "test"  + str(number_of_files - 1 - i) + ".txt"
             print(filename)
@@ -45,6 +48,8 @@ class TestDPLL(unittest.TestCase):
             env.readFile(filename)
             dpll = DPLLAlgorithm()
             kb = []
+            # convert query and clauses toCNF
+            # Then convert query and clauses to sympy format
             if "<=>" in str(env.query):
                 query = sympy_parser(str(convertToCNF(env.query)).replace("=>", ">>").replace("||", "|"))
             else:
