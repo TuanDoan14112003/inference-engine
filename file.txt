@@ -1,4 +1,11 @@
 TELL
+<<<<<<< HEAD
 o & v & r & f => j; o & c & v & r => f; c & j & r => v; r & v => o; j => v; j; v; r;
 ASK
 j
+=======
+p2=> p3; p3 => p1; c => e; b&e => f; f&g => h; p1=>d; p1&p3 => c; a; b;
+p2;
+ASK
+d
+>>>>>>> fba2c37a6519e5eb20334c991856ca7ed3efd5aa

@@ -15,12 +15,11 @@ class Resolution:
 
         clauses = [clause.split("||") for clause in clauses]
         clauses = {frozenset(clause) for clause in clauses}
-
-        # print(clauses)
+        print(len(clauses))
         new = set()
         while True:
             clauseList = [list(clause) for clause in clauses]
-            print(len(clauseList))
+
             for i in range(len(clauseList)-1):
                 for j in range(i+1,len(clauseList)):
                     resolvents = []
@@ -60,7 +59,7 @@ if (__name__ == "__main__"):
     from generalLogicParser import parseClause
     from environment import Environment
     env = Environment()
-    env.readFile("file.txt")
+    env.readFile("UnitTest/testcases/general/test328.txt")
     resolution = Resolution()
     print(resolution.solve(env.knowledgeBase,env.query))
 

@@ -20,15 +20,9 @@ class TruthTableAlgorithm:
 
     def checkAll(self, knowledgeBase, query, symbols, model):
         if not symbols:
-            # for symbol in model:
-            #     print(symbol.symbol + " " + str(symbol.value), end= "  ")
-            # print()
             self.rowCount += 1
             if self.validate(knowledgeBase, model):
                 self.kbCount += 1
-                for symbol in model:
-                    print(str(symbol.symbol) + ": " + str(symbol.value), end ="  ")
-                print()
                 return self.validate([query], model)
             else:
                 return True
@@ -66,8 +60,7 @@ if __name__ == "__main__":
     import sympy
     env = Environment()
     env.readFile("file.txt")
-    print(env.query)
     tt = TruthTableAlgorithm()
     print(tt.checkAll(env.knowledgeBase,env.query,env.symbols,[]))
-    print(tt.kbCount) # rowCount and kbCount must be reset to 0 when checkALl is called the second time with the same instance
+    # print(tt.kbCount) # rowCount and kbCount must be reset to 0 when checkALl is called the second time with the same instance
     # print(tt.rowCount)

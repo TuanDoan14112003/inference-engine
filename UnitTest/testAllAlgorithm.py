@@ -7,20 +7,21 @@ from UnitTest.testResolution import TestResolution
 from UnitTest.testTruthTable import TestTruthTable
 from UnitTest.testFC import  TestFC
 from UnitTest.testBC import  TestBC
-from testGenerator import TestGenerator
+import testGenerator
+
 
 def testAllAlgorithm(kb_type):
     suite = unittest.TestSuite()
-    testGenerator = TestGenerator()
+    test_generator = testGenerator.TestGenerator()
     if kb_type == "horn":
-        testGenerator.generateHornCases("UnitTest/testcases/Horn/")
+        test_generator.generateHornCase("UnitTest/testcases/horns/")
         suite.addTest(TestDPLL("testDPLLWithHornCases"))
-        # suite.addTest(TestResolution("testResolutionWithHornCases"))
+        suite.addTest(TestResolution("testResolutionWithHornCases"))
         suite.addTest(TestTruthTable("testTruthTableWithHornCases"))
         suite.addTest(TestFC("testFCWithHornCases"))
         suite.addTest(TestBC("testBCWithHornCases"))
     elif kb_type == "general":
-        testGenerator.generateGeneralCases("UnitTest/testcases/general/",50, 4)
+        test_generator.generateGeneralCase("UnitTest/testcases/general/",50,3)
         suite.addTest(TestDPLL("testDPLLWithGeneralCases"))
         suite.addTest(TestResolution("testResolutionWithGeneralCases"))
         suite.addTest(TestTruthTable("testTruthTableWithGeneralCases"))
@@ -28,4 +29,5 @@ def testAllAlgorithm(kb_type):
     runner.run(suite)
 
 if __name__ == '__main__':
+    testAllAlgorithm("general")
     testAllAlgorithm("horn")
