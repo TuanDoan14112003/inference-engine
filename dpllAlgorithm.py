@@ -1,6 +1,5 @@
 from clause import Clause
 from generalLogicParser import convertToCNF
-from copy import deepcopy
 import random
 class DPLLAlgorithm:
     def solve(self,kb,query):
@@ -25,19 +24,19 @@ class DPLLAlgorithm:
             return False
         for clause in formula:
             if len(clause) == 1:
-                return self.dpll(self.symplify(formula,list(clause)[0]))
+                return self.dpll(self.simplify(formula,list(clause)[0]))
         literal = random.choice(random.choice([list(clause) for clause in formula]))
-        if self.dpll(self.symplify(formula,literal)):
+        if self.dpll(self.simplify(formula,literal)):
             return True
         else:
             if literal[0] == "~":
                 negationLiteral = literal[1:]
             else:
                 negationLiteral = "~" + literal
-            return self.dpll(self.symplify(formula,negationLiteral))
+            return self.dpll(self.simplify(formula,negationLiteral))
 
 
-    def symplify(self,formula,literal):
+    def simplify(self,formula,literal):
         newFormula = set()
         for clause in formula:
             if literal in clause:
@@ -59,7 +58,7 @@ if __name__ == "__main__":
     from generalLogicParser import parseClause
     from environment import Environment
     env = Environment()
-    env.readFile("file.txt")
+    env.readFile("UnitTest/testcases/general/test101.txt")
     dpll = DPLLAlgorithm()
     print(dpll.solve(env.knowledgeBase,env.query))
     print()
@@ -73,7 +72,7 @@ if __name__ == "__main__":
 
     # formula = {frozenset({'a'}), frozenset({'~a'}), frozenset({'~b'})}
     # dpll = DPLLAlgorithm()
-    # print(dpll.symplify(formula,"a"))
+    # print(dpll.simplify(formula,"a"))
 
 
 

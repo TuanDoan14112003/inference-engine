@@ -15,12 +15,11 @@ class Resolution:
 
         clauses = [clause.split("||") for clause in clauses]
         clauses = {frozenset(clause) for clause in clauses}
-
-        # print(clauses)
+        print(clause)
         new = set()
         while True:
             clauseList = [list(clause) for clause in clauses]
-            print(len(clauseList))
+
             for i in range(len(clauseList)-1):
                 for j in range(i+1,len(clauseList)):
                     resolvents = []

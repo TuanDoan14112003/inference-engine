@@ -9,11 +9,11 @@ class TestGenerator:
 
    
     def generateHornCase(self, parent_folder):
-        current_number_of_test = len(listdir(parent_folder))
+        current_number_of_test = len([file for file in listdir(parent_folder) if "test" in file])
         for i in range(50):
             self.symbols = list(string.ascii_letters[:5])
             clauses = []
-            for j in range(7):
+            for j in range(12):
                 hornClause = list(
                     set(random.choices(self.symbols, k=random.randint(1, 5))))
                 tail = hornClause[:-1]
@@ -27,7 +27,7 @@ class TestGenerator:
             query = random.choice(self.symbols)
             while query in literal:
                 query = random.choice(self.symbols)
-            with open(parent_folder+"horn" + str(current_number_of_test + i)+".txt", "w") as file:
+            with open(parent_folder+"test" + str(current_number_of_test + i)+".txt", "w") as file:
                 file.write("TELL\n")
                 for clause in clauses:
                     file.write(clause)
@@ -36,16 +36,17 @@ class TestGenerator:
                 file.write("ASK\n")
                 file.write(query)
 
-    def generateGeneralCase(self,  parent_folder, number, maxdepth=10):
-        current_number_of_test = len(listdir(parent_folder))
+    def generateGeneralCase(self,  parent_folder, number, maxdepth=4):
+        current_number_of_test = len([file for file in listdir(parent_folder) if "test" in file])
         for j in range(number):
 
-            with open(parent_folder+"general" + str(current_number_of_test + j)+".txt", "w") as file:
+            with open(parent_folder+"test" + str(current_number_of_test + j)+".txt", "w") as file:
                 file.write("TELL\n")
             self.clauses = []
             self.symbols = {symbol: 1 for symbol in list(
                 string.ascii_lowercase[:7])}
             symbol = random.choice(list(self.symbols.keys()))
+            clause = ""
             for i in range(0, 6):
                 clause = "("
                 firstSymbol = random.choice(list(self.symbols.keys()))
@@ -61,7 +62,7 @@ class TestGenerator:
                 if (random.randint(0, 1) == 0):
                     secondSymbol = "~"+secondSymbol
                 clause += firstSymbol
-                operator = random.randint(0, 2)
+                operator = random.randint(0, 3)
                 if operator == 0:
                     clause += "&"
                 elif operator == 1:
@@ -73,14 +74,14 @@ class TestGenerator:
                 clause += secondSymbol
                 clause += ")"
                 self.symbols.update({clause: depth})
-
-                with open(parent_folder+"general" + str(current_number_of_test + j)+".txt", "a") as file:
-                    file.write(clause)
-                    file.write(";")
-            with open(parent_folder+"general" + str(current_number_of_test + j)+".txt", "a") as file:
+                if i != 5:
+                    with open(parent_folder+"test" + str(current_number_of_test + j)+".txt", "a") as file:
+                        file.write(clause)
+                        file.write(";")
+            with open(parent_folder+"test" + str(current_number_of_test + j)+".txt", "a") as file:
                 file.write("\n")
                 file.write("ASK\n")
-                file.write(symbol)
+                file.write(clause)
 
 
     def generateGeneralLogic(self, filename, number, maxdepth=10):
