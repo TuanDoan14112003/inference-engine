@@ -188,6 +188,8 @@ def isLiteral(clause):
 #     return convertToCNF(final)
 #     # return final
 def convertToCNF(clause):
+    if isCNF(clause):
+        return clause
     if clause.operator is None and clause.left is None and isinstance(clause.right, PropositionalSymbol):
         return Clause(right=PropositionalSymbol(symbol=clause.right.symbol))
     elif clause.operator == "~" and isinstance(clause.right.right, PropositionalSymbol):
@@ -229,7 +231,6 @@ def convertToCNF(clause):
     final = Clause(right=convertToCNF(clause.right), left=convertToCNF(
         clause.left) if clause.left is not None else None, operator=clause.operator)
     print(final)
-
     if isCNF(final):
         return final
     else:
@@ -256,7 +257,7 @@ if __name__ == "__main__":
     # newClause = convertToCNF(clause)
     # print(convertToCNF(parseClause("(~(~(~d&f)||~(~(~b&~f)&~a))||~(~b&~f))")))
     # print(newClause)
-    print(convertToCNF(parseClause("(~((~b=>a)=>(~d&~c))&a)")))
+    print(convertToCNF(parseClause("((l <=> v) <=> (l & x) <=> (x || v))")))
     #
     # print(sympy.to_cnf("(~c=>~c)".replace("||", "|").replace("=>", ">>")))
     # print(sympy.a)

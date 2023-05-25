@@ -3,12 +3,7 @@ class PropositionalSymbol:
         self.symbol = symbol.strip()
         self.value = value
 
-    # def setValue(self, value):
-    #     self.value = value
-
     def getValue(self):
-        if self.value is None:
-            raise Exception("Symbol has not been set a value")
         return self.value
 
     def getNumberOfOperands(self):
