@@ -36,9 +36,6 @@ class TruthTableAlgorithm:
 
     def generateTable(self,symbols, model):
         if not symbols:
-            for symbol in model:
-                print(symbol.symbol + "=" + str(symbol.value), end="  ")
-            print()
             self.rowCount += 1
         else:
             symbol = symbols[0]
@@ -62,4 +59,3 @@ if __name__ == "__main__":
     env = Environment()
     env.readFile("file.txt")
     tt = TruthTableAlgorithm()
-    print(tt.checkAll(env.knowledgeBase,env.query,env.symbols,[]))

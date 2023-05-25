@@ -37,4 +37,3 @@ if __name__ == "__main__":
     env = Environment()
     env.readFile("file.txt")
 
-    print(env.symbols)

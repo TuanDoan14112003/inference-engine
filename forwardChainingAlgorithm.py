@@ -1,8 +1,11 @@
+from collections import OrderedDict
+
+
 class ForwardChaining:
     def __init__(self):
         self.foundSymbols = []
     def forwardChainingEntails(self, knowledgeBase, symbols, query):
-        knowledgeBase = list({clause for clause in knowledgeBase}) # remove duplicate clauses
+        knowledgeBase = list(OrderedDict.fromkeys(knowledgeBase)) # remove duplicate clauses
         self.foundSymbols = []
         count = {clause: clause.left.getNumberOfOperands() for clause in knowledgeBase if clause.operator == "=>"} # clause and their number of premises
         inferred = {symbol: False for symbol in symbols}

@@ -81,4 +81,4 @@ if __name__ == "__main__":
     env.readFile("file.txt")
 
     tt = BCAlgorithm()
-    print(tt.backwardChainingEntails(env.knowledgeBase, env.symbols, env.query))
+

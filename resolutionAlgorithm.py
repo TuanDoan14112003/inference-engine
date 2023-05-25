@@ -59,7 +59,6 @@ if (__name__ == "__main__"):
     env = Environment()
     env.readFile("file.txt")
     resolution = Resolution()
-    print(resolution.solve(env.knowledgeBase,env.query))
 
 
     # resolution = Resolution()
