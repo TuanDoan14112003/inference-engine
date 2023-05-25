@@ -9,7 +9,7 @@ class TruthTableAlgorithm:
 
 
     def validate(self, queryList, model):
-        # query ist is a list of clauses [a&b&c => b]
+        # queryList is a list of clauses
         # model is a list of Propositional Symbol [a: True, b: False, c:True]
         for clause in queryList:
             clause.setPropositionalSymbol(model)
@@ -21,15 +21,15 @@ class TruthTableAlgorithm:
     def checkAll(self, knowledgeBase, query, symbols, model):
         if not symbols:
             self.rowCount += 1
-            if self.validate(knowledgeBase, model):
+            if self.validate(knowledgeBase, model): # check if model of knowledge base
                 self.kbCount += 1
-                return self.validate([query], model)
+                return self.validate([query], model) # check if model of query
             else:
                 return True
         else:
             symbol = symbols[0]
             oldSymbols = deepcopy(symbols)
-            oldSymbols.pop(0)
+            oldSymbols.pop(0) # the rest of symbols
             return self.checkAll(knowledgeBase, query, oldSymbols, self.extend(symbol, True, model)) and self.checkAll(
                 knowledgeBase, query, oldSymbols, self.extend(symbol, False, model))
 
@@ -49,6 +49,7 @@ class TruthTableAlgorithm:
 
 
     def extend(self, symbol, value, model):
+        """This function extends the model with a new symbol"""
         newModel = deepcopy(model)
         newPropositionalSymbol = PropositionalSymbol(symbol,value)
         newModel.append(newPropositionalSymbol)
@@ -56,11 +57,9 @@ class TruthTableAlgorithm:
 
 
 if __name__ == "__main__":
+    """Testing"""
     from environment import Environment
-    import sympy
     env = Environment()
     env.readFile("file.txt")
     tt = TruthTableAlgorithm()
     print(tt.checkAll(env.knowledgeBase,env.query,env.symbols,[]))
-    # print(tt.kbCount) # rowCount and kbCount must be reset to 0 when checkALl is called the second time with the same instance
-    # print(tt.rowCount)
