@@ -5,7 +5,6 @@ from clause import Clause
 class BCAlgorithm:
     def __init__(self):
         self.foundSymbols = []
-        self.output = "NO"
         self.outputSymbols = []
         self.inferred = {}
 
@@ -16,7 +15,6 @@ class BCAlgorithm:
                              clause.operator is None and clause.left is None]
 
         if self.infer(kb, query, []):
-            self.output = "YES: "
             return True
         return False
 
@@ -27,8 +25,9 @@ class BCAlgorithm:
             query = query.right
 
         if query.symbol in self.foundSymbols:
-            if query.symbol not in self.foundSymbols:
+            if query.symbol not in self.outputSymbols:
                 self.foundSymbols.append(query.symbol)
+                self.outputSymbols.append(query.symbol)
             return True
         
         for clause in kb:
@@ -48,7 +47,6 @@ class BCAlgorithm:
                         
                         if (isinstance(premise, Clause)):
                             premise = premise.right
-                        print(premise.symbol)
                         if premise == query:
                             break
 
@@ -70,6 +68,7 @@ class BCAlgorithm:
                     if trueSymbolCount == len(leftHandSymbols):
                         if query.symbol not in self.foundSymbols:
                             self.foundSymbols.append(query.symbol)
+                            self.outputSymbols.append(query.symbol)
                         return True
         return False
 

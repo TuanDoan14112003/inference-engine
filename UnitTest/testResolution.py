@@ -31,12 +31,15 @@ class TestResolution(unittest.TestCase):
         parent_folder = "UnitTest/testcases/general/"
         number_of_files = len([file for file in os.listdir(parent_folder) if "test" in file])
         for i in range(50):
+            # reading each file in the folder
             filename = parent_folder + "test" + str(number_of_files - 1 - i) + ".txt"
             print(filename)
             env = Environment()
             env.readFile(filename)
             resolution = Resolution()
             kb = []
+            # convert query and clauses toCNF
+            # Then convert query and clauses to sympy format
             if "<=>" in str(env.query):
                 query = sympy_parser(str(convertToCNF(env.query)).replace("=>", ">>").replace("||", "|"))
             else:

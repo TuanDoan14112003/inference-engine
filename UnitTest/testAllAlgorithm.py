@@ -13,6 +13,7 @@ import testGenerator
 def testAllAlgorithm(kb_type):
     suite = unittest.TestSuite()
     test_generator = testGenerator.TestGenerator()
+    #testing with horn cases test
     if kb_type == "horn":
         test_generator.generateHornCase("UnitTest/testcases/horns/")
         suite.addTest(TestDPLL("testDPLLWithHornCases"))
@@ -20,6 +21,7 @@ def testAllAlgorithm(kb_type):
         suite.addTest(TestTruthTable("testTruthTableWithHornCases"))
         suite.addTest(TestFC("testFCWithHornCases"))
         suite.addTest(TestBC("testBCWithHornCases"))
+    #testing with general cases test
     elif kb_type == "general":
         test_generator.generateGeneralCase("UnitTest/testcases/general/",50,3)
         suite.addTest(TestDPLL("testDPLLWithGeneralCases"))

@@ -10,6 +10,7 @@ from generalLogicParser import convertToCNF
 
 class TestTruthTable(unittest.TestCase):
 
+    #test for TT algorithm with horn cases
     def testTruthTableWithHornCases(self):
         print("*"*20 + "Testing TT With horn cases" + "*"*20)
         env = Environment()
@@ -21,6 +22,7 @@ class TestTruthTable(unittest.TestCase):
             env.readFile(filename)
             truthTable = TruthTableAlgorithm()
             kb = []
+            # convert query and clauses to sympy format
             query = sympy_parser(str(env.query).replace("=>", ">>").replace("||", "|"))
 
 
@@ -31,6 +33,7 @@ class TestTruthTable(unittest.TestCase):
             self.assertEqual(truthTable.checkAll(
                 env.knowledgeBase, env.query, env.symbols, []), entails(query, kb))
 
+    #test for TT algorithm with general cases
     def testTruthTableWithGeneralCases(self):
         print("*"*20 + "Testing TT With general cases" + "*"*20)
         env = Environment()
@@ -42,6 +45,8 @@ class TestTruthTable(unittest.TestCase):
             env.readFile(filename)
             truthTable = TruthTableAlgorithm()
             kb = []
+            # convert query and clauses toCNF
+            # Then convert query and clauses to sympy format
             if "<=>" in str(env.query):
                 query = sympy_parser(str(convertToCNF(env.query)).replace("=>", ">>").replace("||", "|"))
             else:

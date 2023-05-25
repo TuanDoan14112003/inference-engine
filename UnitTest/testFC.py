@@ -15,12 +15,14 @@ class TestFC(unittest.TestCase):
         parent_folder = "UnitTest/testcases/horns/"
         number_of_files = len([file for file in os.listdir(parent_folder) if "test" in file])
         for i in range(50):
+            # reading each file in the folder
             filename= parent_folder + "test"  + str(number_of_files - 1 - i) + ".txt"
             print(filename)
             env = Environment()
             env.readFile(filename)
             forwardChaining = ForwardChaining()
             kb = []
+            # convert query and clauses to sympy format
             query = sympy_parser(str(env.query).replace("=>", ">>").replace("||","|"))
 
             for clause in env.knowledgeBase:
