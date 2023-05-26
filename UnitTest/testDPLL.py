@@ -65,6 +65,5 @@ class TestDPLL(unittest.TestCase):
             rs = entails(query, kb)
             if rs:
                 trueCount += 1
-
             self.assertEqual(dpll.solve(env.knowledgeBase, env.query),
                              entails(query, kb))

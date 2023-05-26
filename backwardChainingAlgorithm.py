@@ -78,7 +78,7 @@ if __name__ == "__main__":
     from environment import Environment
 
     env = Environment()
-    env.readFile("file.txt")
+    env.readFile("test.txt")
 
     tt = BCAlgorithm()
 
