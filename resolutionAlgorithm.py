@@ -53,24 +53,5 @@ class Resolution:
 
 
 
-if (__name__ == "__main__"):
-    from generalLogicParser import parseClause
-    from environment import Environment
-    env = Environment()
-    env.readFile("test.txt")
-    resolution = Resolution()
-
-
-    # resolution = Resolution()
-    # clause1 = parseClause("a&b&c&d&e => f")
-    # clause2 = parseClause("a")
-    # clause3 = parseClause("b")
-    # clause4 = parseClause("c")
-    # clause5 = parseClause("d")
-    # clause6 = parseClause("e")
-    # query = parseClause("f")
-    # print(resolution.solve(kb=[clause1,clause2,clause3,clause4,clause5,clause6],query=query))
-
-
 
 

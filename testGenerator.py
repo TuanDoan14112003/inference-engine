@@ -138,11 +138,3 @@ class TestGenerator:
                 file.write("\n")
 
 
-if __name__ == "__main__":
-    # test1 = testGenrator()
-    # test1.generateHornCase()
-    import sys
-    test2 = TestGenerator()
-    # test2.generateGeneralCase(
-    #     "UnitTest/testcases/resolution/resolution", 50, 3)
-    test2.generateGeneralCase("UnitTest/testcases/general/",50,3)
