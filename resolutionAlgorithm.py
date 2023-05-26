@@ -57,7 +57,7 @@ if (__name__ == "__main__"):
     from generalLogicParser import parseClause
     from environment import Environment
     env = Environment()
-    env.readFile("file.txt")
+    env.readFile("test.txt")
     resolution = Resolution()
 
 

@@ -1,4 +1,0 @@
-TELL
-(a<=>b);a;c
-ASK
-b
