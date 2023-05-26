@@ -29,13 +29,3 @@ class ForwardChaining:
 
         return False
 
-
-if __name__ == "__main__":
-    from environment import Environment
-
-    env = Environment()
-    env.readFile("UnitTest/testcases/horns/test1519.txt")
-
-    tt = ForwardChaining()
-    print(tt.forwardChainingEntails(env.knowledgeBase, env.symbols, env.query))
-    print(tt.foundSymbols)  # foundSymbols must be reset to [] when forwardChainingEntails is called the second time

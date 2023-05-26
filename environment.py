@@ -34,7 +34,4 @@ class Environment:
             self.symbols = list(set(symbols)) # remove duplicates
 
 
-if __name__ == "__main__":
-    env = Environment()
-    env.readFile("test.txt")
 

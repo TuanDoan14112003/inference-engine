@@ -54,24 +54,6 @@ class DPLLAlgorithm:
 
 
 
-if __name__ == "__main__":
-    """Testing"""
-    t = DPLLAlgorithm()
-    from generalLogicParser import parseClause
-    from environment import Environment
-    env = Environment()
-    env.readFile("test.txt")
-    dpll = DPLLAlgorithm()
-    print(dpll.solve(env.knowledgeBase,env.query))
-    # dpll = DPLLAlgorithm()
-    # clause1 = parseClause("~a")
-    # clause2 = parseClause("a")
-    # query = parseClause("b")
-    # print(dpll.solve(kb=[clause1,clause2],query=query))
-
-    # formula = {frozenset({'a'}), frozenset({'~a'}), frozenset({'~b'})}
-    # dpll = DPLLAlgorithm()
-    # print(dpll.simplify(formula,"a"))
 
 
 
