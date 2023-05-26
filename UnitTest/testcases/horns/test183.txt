@@ -1,0 +1,4 @@
+TELL
+a =>e; a =>d; c&e&a =>b; b =>e; c&b&a =>e; b&a =>d; c&e&a =>b; c&e&a =>d; c =>a; c&b&a =>e; c&a =>e; e; b; d; 
+ASK
+c

@@ -57,6 +57,6 @@ if __name__ == "__main__":
     """Testing"""
     from environment import Environment
     env = Environment()
-    env.readFile("UnitTest/testcases/horns/test1519.txt")
+    env.readFile("file.txt")
     tt = TruthTableAlgorithm()
     print(tt.checkAll(env.knowledgeBase,env.query,env.symbols,[]))

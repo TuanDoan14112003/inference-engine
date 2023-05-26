@@ -41,7 +41,7 @@ class TestResolution(unittest.TestCase):
             # convert query and clauses toCNF
             # Then convert query and clauses to sympy format
             if "<=>" in str(env.query):
-                query = sympy_parser(str(convertToCNF(env.query)).replace("=>", ">>").replace("||", "|"))
+                query = sympy_parser(str(convertToCNF(env.query)).replace("=>", ">>").replace("||", "|")) # As sympy does not have <=> symbol, we have to convert the clause to CNF
             else:
                 query = sympy_parser(str(env.query).replace("=>", ">>").replace("||", "|"))
 

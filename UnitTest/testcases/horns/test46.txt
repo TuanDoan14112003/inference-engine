@@ -1,4 +1,4 @@
 TELL
-b&e =>d; a&d =>e; a =>e; a =>e; a&d =>b; a&e&c =>d; a; e; d; 
+d&a =>e; d&c&b =>e; d&c&b =>a; d =>a; d =>b; c =>b; c&b =>e; d =>c; d =>e; d =>c; d; 
 ASK
-c
+b
